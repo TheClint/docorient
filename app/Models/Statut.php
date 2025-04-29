@@ -13,6 +13,6 @@ class Statut extends Model
 
     public function amendements(): HasMany
     {
-        return $this->hasMany(Segment::class);
+        return $this->hasMany(Amendement::class);
     }
 }

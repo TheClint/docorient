@@ -1,31 +1,27 @@
 <?php
 
-use App\Models\Amendement;
 use App\Models\User;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Statut;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('amendements', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->text("texte");
-            $table->text("commentaire")->nullable();
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Amendement::class);
+
+            $table->text('texte');              // Texte proposé
+            $table->text('commentaire')->nullable(); // Optionnel : justification
+
+            $table->foreignIdFor(User::class);  // Auteur de l'amendement
+            $table->foreignIdFor(Statut::class);  // statut de l'amendement
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('amendements');

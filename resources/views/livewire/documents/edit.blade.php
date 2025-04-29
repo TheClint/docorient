@@ -1,4 +1,7 @@
 <div>
+
+    <x-flash-messages />
+    
     <h1 class="text-xl font-bold mb-4">Modifier le document</h1>
 
     @if (session()->has('success'))

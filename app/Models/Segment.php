@@ -11,6 +11,7 @@ class Segment extends Model
 {
     protected $fillable = [
         'texte',
+        'document_id',
     ];
 
     public function document(): BelongsTo
@@ -20,6 +21,6 @@ class Segment extends Model
 
     public function modifications(): BelongsToMany
     {
-        return $this->belongsToMany(Amendement::class)->as('modification');
+        return $this->belongsToMany(Amendement::class)->as('modifications');
     }
 }

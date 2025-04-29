@@ -5,7 +5,7 @@ namespace App\Livewire\Documents;
 use Livewire\Component;
 use App\Models\Document;
 
-class EditDocument extends Component
+class Edit extends Component
 {
     public $documentId;
     public $nom;
@@ -39,7 +39,7 @@ class EditDocument extends Component
 
     public function render()
     {
-        return view('livewire.documents.edit-document');
+        return view('livewire.documents.edit');
     }
 }
 

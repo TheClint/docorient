@@ -1,4 +1,7 @@
 <div>
+
+    <x-flash-messages />
+
     <h1 class="text-xl font-bold mb-4">Liste des documents</h1>
 
     <!-- Lien vers la page de création -->
@@ -13,6 +16,7 @@
                 <p>{{ $document->description }}</p>
 
                 <a href="{{ route('documents.edit', $document->id) }}" class="text-sm text-blue-500 underline">Modifier</a>
+                <a href="{{ route('documents.read', $document->id) }}" class="text-sm text-blue-500 underline">Lire</a>
             </li>
         @empty
             <p>Aucun document trouvé.</p>

@@ -13,9 +13,11 @@ class Amendement extends Model
     protected $fillable = [
         'texte',
         'commentaire',
+        'user_id',
+        'statut_id',
     ];
 
-    public function createur(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -34,4 +36,5 @@ class Amendement extends Model
     {
         return $this->belongsToMany(Segment::class)->as('modification');
     }
+
 }
