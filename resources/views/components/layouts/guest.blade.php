@@ -1,16 +1,38 @@
+<!-- resources/views/components/app-layout.blade.php -->
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Connexion DocOrient</title>
-    @vite('resources/css/app.css') {{-- si tu utilises Vite --}}
-    @livewireStyles
-</head>
-<body class="min-h-screen bg-gray-100 flex items-center justify-center">
-    <div class="w-full max-w-md p-6 bg-white shadow-md rounded">
-        {{ $slot }}
-    </div>
+    <head>
+        <meta charset="UTF-8">
+        <title>DocOrient</title>
+        @vite('resources/css/app.css')
+        @livewireStyles
+    </head>
+    <body class="flex flex-col min-h-screen h-full bg-gray-100">
 
-    @livewireScripts
-</body>
+            <header class="bg-white shadow py-4 px-6">
+                @isset($header)
+                    {{ $header }}
+                @else
+                        <livewire:welcome.navigation />
+                @endisset
+            </header>
+            
+
+            <main class="flex-grow flex items-center justify-center px-6 py-8">
+                {{ $slot  }}
+            </main>
+
+        <footer class="bg-white border-t mt-12">
+            @isset($footer)
+                {{ $footer }}
+            @else
+                <div class="max-w-7xl mx-auto px-4 py-6 text-center text-gray-500 text-sm">
+                    &copy; {{ date('Y') }} DocOrient. Tous droits réservés.
+                </div>
+            @endisset
+        </footer>
+
+        @livewireScripts
+        @vite('resources/js/app.js')
+    </body>
 </html>

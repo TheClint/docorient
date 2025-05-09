@@ -25,6 +25,6 @@
             @error('contenu') <span class="text-red-500">{{ $message }}</span> @enderror
         </div>
 
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2">Créer</button>
+        <button type="submit" class="bg-red-500 text-white px-4 py-2">Créer</button>
     </form>
 </div>

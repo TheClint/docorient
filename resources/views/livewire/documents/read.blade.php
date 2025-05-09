@@ -1,30 +1,38 @@
-<div>
+<div class="flex flex-col w-screen" style="min-height: calc(70vh)">
 
     <x-flash-messages />
 
-    <h1>{{ $document->nom }}</h1>
-    <p>{{ $document->description }}</p>
+    <!-- Titre principal -->
+    <h1 class="text-4xl font-bold mt-4">{{ $document->nom }}</h1>
 
-    <h2>Contenu :</h2>
-    <div>
+    <!-- Description du document -->
+    <p class="mt-2 text-lg text-gray-700">
+        @if(empty($document->description))
+            <i>Pas de description</i>
+        @else
+            <i>{{ $document->description }}</i>
+        @endif
+    </p>
+
+    <!-- Contenu du document -->
+    <div class="flex-grow">
         <p class="text-content leading-relaxed">
             {!! nl2br(e($texte)) !!}
         </p>
     </div>
 
-    <a href="{{ route('documents.index') }}">Retour à la liste des documents</a>
-
-    <div class="flex justify-end mb-4">
-        <a href="{{ route('amendements.create', ['documentId' => $document->id]) }}" 
-           class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-            ✏️ Proposer un amendement
-        </a>
+    <div class="flex justify-between m-4">
+        <!-- Bouton à gauche -->
+        <div class="flex mr-4">
+            <x-button route="{{ route('documents.index') }}" label="Retour à la liste des documents" />
+        </div>
+    
+        <!-- Boutons à droite -->
+        <div class="flex gap-4">
+            <x-button route="{{ route('amendements.create', ['documentId' => $document->id]) }}" label="Proposer un amendement" />
+            <x-button route="{{ route('amendements.index', ['documentId' => $document->id]) }}" label="Voir les amendements" />
+        </div>
     </div>
-    <div class="flex justify-end mb-4">
-        <a href="{{ route('amendements.index', ['documentId' => $document->id]) }}" 
-           class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-            ✏️ voir les amendements
-        </a>
-    </div>
+    
     
 </div>

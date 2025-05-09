@@ -15,10 +15,8 @@ class Create extends Component
 
     public $segmentDebutId = null;
     public $segmentFinId = null;
-    public $texte = '';
-    public string $texteAvant = '';
-    public string $texteModifiable = '';
-    public string $texteApres = '';
+    public $texte = ''; // Ceci contient le texte complet sélectionné
+    public string $texteModifiable = ''; // Le texte à amender
     public $commentaire = '';
 
     public function mount()
@@ -33,9 +31,7 @@ class Create extends Component
         if (!$this->segmentDebutId) {
             $this->segmentDebutId = $id;
             $this->segmentFinId = null;
-            $this->texte = '';
-            $this->texteAvant = '';
-            $this->texteApres = '';
+            $this->texteModifiable = '';
         } elseif (!$this->segmentFinId) {
             $this->segmentFinId = $id;
 
@@ -49,72 +45,64 @@ class Create extends Component
                 ->pluck('texte')
                 ->implode('');
 
-            // Maintenant on sépare le texte avant, modifiable et après
-            $startIndex = $this->segments->where('id', $this->segmentDebutId)->first()->texte;
-            $endIndex = $this->segments->where('id', $this->segmentFinId)->first()->texte;
-
-            $beforeText = substr($selectedSegments, 0, strpos($selectedSegments, $startIndex));
-            $afterText = substr($selectedSegments, strpos($selectedSegments, $endIndex) + strlen($endIndex));
-
-            $this->texteAvant = $beforeText;
-            $this->texteModifiable = substr($selectedSegments, strlen($beforeText), strlen($selectedSegments) - strlen($beforeText) - strlen($afterText));
-            $this->texteApres = $afterText;
-
-            // Le texte entier sélectionné dans le champ texte
-            $this->texte = $this->texteAvant . $this->texteModifiable . $this->texteApres;
+            // Maintenant, on met à jour le texte modifiable
+            $this->texteModifiable = $selectedSegments;
         } else {
             $this->segmentDebutId = $id;
             $this->segmentFinId = null;
-            $this->texte = '';
-            $this->texteAvant = '';
-            $this->texteApres = '';
+            $this->texteModifiable = '';
         }
     }
 
-
-
     public function save()
     {
-        $this->validate([
-            'segmentDebutId' => 'required|exists:segments,id',
-            'segmentFinId' => 'required|exists:segments,id',
-            'texteModifiable' => 'required|string',
-            'commentaire' => 'nullable|string',
-        ]);
 
-        // Récupérer les segments sélectionnés entre début et fin
-        $selectedSegments = $this->segments
-        ->filter(fn($s) => $s->id >= $this->segmentDebutId && $s->id <= $this->segmentFinId)
-        ->pluck('texte')
-        ->implode('');
+        if(!isset($this->segmentDebutId))
+            session()->flash('warning', 'Vous n\'avez pas selectionné de plage');
+        else{
 
-        // verification si l'amendement proposé est différent du texte original
-        if(strcmp($this->texteModifiable, $selectedSegments)){
-
-            $amendement = Amendement::create([
-                'texte' => $this->texteModifiable,
-                'commentaire' => $this->commentaire,
-                'user_id' => Auth::id(),
-                'statut_id' => Statut::where("libelle", "non voté")->first()->id,
+            $this->validate([
+                'segmentDebutId' => 'required|exists:segments,id',
+                'segmentFinId' => 'required|exists:segments,id',
+                'texteModifiable' => 'required|string',
+                'commentaire' => 'nullable|string',
             ]);
+            
 
-            $tableauIdSegmentsAmende = array();
-            foreach($this->segments as $segment){
-                if($segment->id >=  $this->segmentDebutId && $segment->id <= $this->segmentFinId)
-                    array_push($tableauIdSegmentsAmende, $segment->id);
+            // Récupérer les segments sélectionnés entre début et fin
+            $selectedSegments = $this->segments
+            ->filter(fn($s) => $s->id >= $this->segmentDebutId && $s->id <= $this->segmentFinId)
+            ->pluck('texte')
+            ->implode('');
+
+            // vérification si l'amendement proposé est différent du texte original
+            if(strcmp($this->texteModifiable, $selectedSegments)){
+
+                $amendement = Amendement::create([
+                    'texte' => $this->texteModifiable,
+                    'commentaire' => $this->commentaire,
+                    'user_id' => Auth::id(),
+                    'statut_id' => Statut::where("libelle", "non voté")->first()->id,
+                ]);
+
+                $tableauIdSegmentsAmende = array();
+                foreach($this->segments as $segment){
+                    if($segment->id >=  $this->segmentDebutId && $segment->id <= $this->segmentFinId)
+                        array_push($tableauIdSegmentsAmende, $segment->id);
+                }
+
+                $amendement->modifications()->attach($tableauIdSegmentsAmende);
+
+                session()->flash('success', 'Amendement proposé avec succès.');
+
+                redirect()->route('documents.read', ['document' => $this->documentId]);
+            }else{
+                session()->flash('error', 'L\'amendement proposé est identique au texte original');
             }
-
-            $amendement->modifications()->attach($tableauIdSegmentsAmende);
-
-            session()->flash('success', 'Amendement proposé avec succès.');
-
-            redirect()->route('documents.read', ['document' => $this->documentId]);
-        }else{
-            session()->flash('error', 'L\'amendement proposé est identique au texte original');
-        }    
+        } 
 
         // Reset formulaire
-        $this->reset(['segmentDebutId', 'segmentFinId', 'texte', 'commentaire']);
+        $this->reset(['segmentDebutId', 'segmentFinId', 'texteModifiable', 'commentaire']);
     }
 
     public function render()

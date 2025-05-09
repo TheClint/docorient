@@ -4,6 +4,7 @@ namespace App\Livewire\Amendements;
 
 use App\Models\Segment;
 use Livewire\Component;
+use App\Models\Document;
 use App\Models\Amendement;
 
 class Read extends Component
@@ -18,6 +19,7 @@ class Read extends Component
     public $positionsDiffTextAmende = [];
     public $segmentsAvant;
     public $segmentsApres;
+    public $document;
 
     public function mount($amendement)
     {
@@ -27,12 +29,14 @@ class Read extends Component
         // récupération de l'id du document associé au premier segment de l'amendement
         $documentId = $this->amendement->modifications[0]->document->id;
 
+        $this->document = Document::find($documentId);
+
         $this->segmentsAvant = Segment::where('document_id', $documentId)
         ->where('id', '<', $this->amendement->modifications[0]->id)
         ->orderBy('id')
         ->get();
         $this->segmentsApres = Segment::where('document_id', $documentId)
-        ->where('id', '<', $this->amendement->modifications[count($this->amendement->modifications)-1]->id)
+        ->where('id', '>', $this->amendement->modifications[count($this->amendement->modifications)-1]->id)
         ->orderBy('id')
         ->get();
 

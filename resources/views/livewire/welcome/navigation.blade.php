@@ -1,26 +1,24 @@
-<nav class="-mx-3 flex flex-1 justify-end">
-    @auth
-        <a
-            href="{{ url('/documents') }}"
-            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-        >
-            Document
-        </a>
-    @else
-        <a
-            href="{{ route('login') }}"
-            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-        >
-            Log in
-        </a>
-
-        @if (Route::has('register'))
-            <a
-                href="{{ route('register') }}"
-                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-            >
-                Register
+<div class="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
+        <div class="shrink-0 flex items-center">
+            <a href="{{ route('welcome') }}" wire:navigate>
+                <h1 class="text-2xl font-bold text-red-600">DocOrient</h1>
             </a>
-        @endif
-    @endauth
-</nav>
+        </div>
+        <nav class=" flex items-center space-x-4">
+            
+                <a
+                    href="{{ route('login') }}"
+                    class="text-gray-600 hover:text-red-500"
+                >
+                    Se connecter
+                </a>
+
+                <a
+                    href="{{ route('register') }}"
+                    class="text-gray-600 hover:text-red-500"
+                >
+                    S'enregistrer
+                </a>
+           
+        </nav>
+</div>

@@ -11,7 +11,7 @@ use App\Livewire\Amendements\Index as AmendementsIndex;
 use App\Livewire\Amendements\Create as AmendementsCreate;
 use App\Livewire\Amendements\Read as AmendementsRead;
 
-Route::view('/', 'welcome');
+Route::view('/', 'welcome')->name('welcome');
 
 
 
@@ -33,6 +33,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/documents/{documentId}/amendements/create', AmendementsCreate::class)->name('amendements.create');
     Route::get('/amendements/{amendement}', AmendementsRead::class)->name('amendements.read');
 });
-
 
 require __DIR__.'/auth.php';

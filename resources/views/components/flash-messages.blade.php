@@ -1,15 +1,27 @@
-<div>
-   {{-- Messages --}}
-   @if (session()->has('success'))
-        <div class="mt-4 text-green-600 font-semibold">{{ session('success') }}</div>
-    @endif
-    @if (session()->has('error'))
-        <div class="mt-4 text-red-500 p-2 font-semibold">{{ session('error') }}</div>
-    @endif
-    @if (session()->has('info'))
-        <div class="mt-4 text-blue-500 p-2 font-semibold">{{ session('info') }}</div>
-    @endif
-    @if (session()->has('warning'))
-        <div class="mt-4 text-yellow-600 p-2 font-semibold">{{ session('warning') }}</div>
-    @endif
+<div class="mt-6 flex justify-center">
+    <div class="w-full max-w-md space-y-4">
+        @if (session()->has('success'))
+            <div class="bg-green-100 text-green-800 p-4 rounded shadow text-center font-semibold">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session()->has('error'))
+            <div class="bg-red-100 text-red-800 p-4 rounded shadow text-center font-semibold">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if (session()->has('info'))
+            <div class="bg-blue-100 text-blue-800 p-4 rounded shadow text-center font-semibold">
+                {{ session('info') }}
+            </div>
+        @endif
+
+        @if (session()->has('warning'))
+            <div class="bg-yellow-100 text-yellow-800 p-4 rounded shadow text-center font-semibold">
+                {{ session('warning') }}
+            </div>
+        @endif
+    </div>
 </div>

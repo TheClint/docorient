@@ -1,16 +1,20 @@
-</div>
-
-<x-flash-messages />
 
 <div class="container">
-    <h1 class="mb-4">Consultation de l'Amendement</h1>
+    <x-flash-messages />
 
     <div class="card mb-4">
         <div class="card-body">
-            <h5 class="card-title">Informations sur l'amendement</h5>
+            <p><strong>Titre :</strong> {{ $document->nom }}</p>
             <p><strong>Auteur :</strong> {{ $amendement->user->name }}</p>
             <p><strong>Date de création :</strong> {{ $amendement->created_at->format('d/m/Y à H:i') }}</p>
             <p><strong>Statut :</strong> {{ ucfirst($amendement->statut->libelle) }}</p>
+            <p><strong>Commentaire :</strong> 
+                @if($amendement->commentaire)
+                    {{ $amendement->commentaire }}
+                @else
+                Pas de commentaire
+                @endif
+            </p>
         </div>
     </div>
 
@@ -23,28 +27,68 @@
             border-radius: 2px;
         }
     </style>
-
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Texte original</h4>
+    <div class="grid grid-cols-2 gap-4">
+        <div class="bg-gray-200 p-4">
+            <h4 class="flex text-xl font-bold mb-2 justify-center">Texte original</h4>
             @foreach ($segmentsAvant as $segment)
-                {{ $segment->texte }}
+                @if($segment->texte[0] == "\n")
+                    </span> 
+                        @for ($i = 0; $i <= strlen($segment->texte); $i++)
+                            <div class="w-full"><br></div>
+                        @endfor
+                    </span>
+                @else
+                    {!! nl2br(e($segment->texte)) !!}
+                @endif
             @endforeach
             {!! $formattedTextOriginal !!}
             @foreach ($segmentsApres as $segment)
-                {{ $segment->texte }}
+                @if($segment->texte[0] == "\n")
+                    </span> 
+                        @for ($i = 0; $i <= strlen($segment->texte); $i++)
+                            <div class="w-full"><br></div>
+                        @endfor
+                    </span>
+                @else
+                    {!! nl2br(e($segment->texte)) !!}
+                @endif
             @endforeach
         </div>
-
-        <div class="col-md-6">
-            <h4>Texte amendé</h4>
+    
+        <div class="bg-gray-200 p-4">
+            <h4 class="flex justify-center text-xl font-bold mb-2">Texte amendé</h4>
             @foreach ($segmentsAvant as $segment)
-                {{ $segment->texte }}
+                @if($segment->texte[0] == "\n")
+                    </span> 
+                        @for ($i = 0; $i <= strlen($segment->texte); $i++)
+                            <div class="w-full"><br></div>
+                        @endfor
+                    </span>
+                @else
+                    {!! nl2br(e($segment->texte)) !!}
+                @endif
             @endforeach
             {!! $formattedTextAmende !!}
             @foreach ($segmentsApres as $segment)
-                {{ $segment->texte }}
+                @if($segment->texte[0] == "\n")
+                    </span> 
+                        @for ($i = 0; $i <= strlen($segment->texte); $i++)
+                            <div class="w-full"><br></div>
+                        @endfor
+                    </span>
+                @else
+                    {!! nl2br(e($segment->texte)) !!}
+                @endif
             @endforeach
         </div>
     </div>
+
+    <div class="flex justify-between m-4">
+        <!-- Bouton à gauche -->
+        <div class="flex mr-4">
+            <x-button route="{{ route('amendements.index', ['documentId' => $document->id]) }}" label="Retour à la liste des amendements" />
+        </div>
+    
+    </div>
 </div>
+
