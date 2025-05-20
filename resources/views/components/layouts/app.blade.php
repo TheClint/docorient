@@ -13,10 +13,9 @@
             @isset($header)
                 {{ $header }}
             @else
-                    <livewire:layout.navigation />
+                <livewire:layout.navigation />
             @endisset
         </header>
-        
 
         <main class="flex-grow flex items-center justify-center px-6 py-8">
             {{ $slot }}
@@ -32,7 +31,6 @@
             @endisset
         </footer>
 
-        @livewireScripts
-        @vite('resources/js/app.js')
+        @vite('resources/js/app.js') 
     </body>
 </html>

@@ -1,4 +1,4 @@
-<!-- resources/views/components/app-layout.blade.php -->
+<!-- resources/views/components/guest-layout.blade.php -->
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -9,18 +9,17 @@
     </head>
     <body class="flex flex-col min-h-screen h-full bg-gray-100">
 
-            <header class="bg-white shadow py-4 px-6">
-                @isset($header)
-                    {{ $header }}
-                @else
-                        <livewire:welcome.navigation />
-                @endisset
-            </header>
-            
-
-            <main class="flex-grow flex items-center justify-center px-6 py-8">
-                {{ $slot  }}
-            </main>
+        <header class="bg-white shadow py-4 px-6">
+            @isset($header)
+                {{ $header }}
+            @else
+                <livewire:welcome.navigation />
+            @endisset
+        </header>
+        
+        <main class="flex-grow flex items-center justify-center px-6 py-8">
+            {{ $slot }}
+        </main>
 
         <footer class="bg-white border-t mt-12">
             @isset($footer)
@@ -32,7 +31,6 @@
             @endisset
         </footer>
 
-        @livewireScripts
         @vite('resources/js/app.js')
     </body>
 </html>

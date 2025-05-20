@@ -73,8 +73,12 @@ class User extends Authenticatable
         return $this->belongsTo(Groupe::class);
     }
 
-    public function approbations(): BelongsToMany
+    public function votes(): BelongsToMany
     {
-        return $this->belongsToMany(Amendement::class)->withPivot('approbation')->as('vote');;
+        return $this->belongsToMany(Amendement::class)
+                    ->withPivot('approbation')
+                    ->as('vote')
+                    ->withTimestamps();
     }
+
 }

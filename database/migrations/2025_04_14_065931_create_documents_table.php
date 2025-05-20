@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('nom');
             $table->text('description')->nullable();
             $table->foreignIdFor(User::class);
+            $table->timestamp('amendement_ouverture')->nullable();
+            $table->timestamp('vote_fermeture')->nullable();
+
         });
     }
 

@@ -27,9 +27,12 @@ class Amendement extends Model
         return $this->belongsTo(Statut::class);
     }
 
-    public function approbations(): BelongsToMany
+    public function votes(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)->withPivot('approbation')->as('vote');
+        return $this->belongsToMany(User::class)
+                    ->withPivot('approbation')
+                    ->as('vote')
+                    ->withTimestamps();
     }
 
     public function modifications(): BelongsToMany

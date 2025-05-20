@@ -84,10 +84,15 @@
 </div>
 
 {{-- Script pour la gestion du tri --}}
-<script>
-    document.addEventListener('livewire:load', function () {
-        Livewire.on('sorted', function (field, direction) {
-            // Optionnel: si tu veux manipuler des effets après le tri
+@script
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Utilisation de Livewire.on() pour écouter l'événement 'sorted'
+            Livewire.on('sorted', function (field, direction) {
+                // Manipule des effets ici après le tri
+                console.log('📦 Tri effectué :', field, direction);
+            });
         });
-    });
-</script>
+    </script>
+@endscript
+

@@ -13,6 +13,8 @@ class Document extends Model
         'nom',
         'description',
         'user_id',
+        'amendement_ouverture',
+        'vote_fermeture',
     ];
 
     public function createur(): BelongsTo
@@ -25,3 +27,4 @@ class Document extends Model
         return $this->hasMany(Segment::class);
     }
 }
+

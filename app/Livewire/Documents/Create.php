@@ -2,9 +2,11 @@
 
 namespace App\Livewire\Documents;
 
+
+use App\Models\Segment;
 use Livewire\Component;
 use App\Models\Document;
-use App\Models\Segment;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class Create extends Component
@@ -12,6 +14,8 @@ class Create extends Component
     public $nom;
     public $description;
     public $contenu;
+    public $amendement_ouverture;
+    public $vote_fermeture;
 
     // Fonction pour enregistrer le document
     public function save()
@@ -21,6 +25,8 @@ class Create extends Component
             'nom' => 'required|string|max:255',
             'description' => 'nullable|string',
             'contenu' => 'required|string',
+            'amendement_ouverture' => 'nullable|date',
+            'vote_fermeture' => 'nullable|date',
         ]);
 
         // Création du document en base
@@ -28,6 +34,8 @@ class Create extends Component
             'nom' => $this->nom,
             'description' => $this->description,
             'user_id' => Auth::id(), // On associe l'ID de l'utilisateur connecté
+            'amendement_ouverture' => Carbon::parse($this->amendement_ouverture, 'Europe/Paris')->setTimezone('UTC'),
+            'vote_fermeture' => $this->vote_fermeture ? Carbon::parse($this->vote_fermeture, 'Europe/Paris')->setTimezone('UTC') : null,
         ]);
 
         // découpage initiale des segments

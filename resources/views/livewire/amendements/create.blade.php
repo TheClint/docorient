@@ -43,13 +43,13 @@
         <label class="block font-medium">Amendement :</label>
     
         {{-- Partie modifiable --}}
-        <textarea wire:model="texteModifiable" class="w-full border rounded p-2" rows="4">
+        <textarea wire:model.live="texteModifiable" class="w-full border rounded p-2" rows="4">
         </textarea>
     </div>
 
     <div class="mt-4 space-y-2">
         <label for="commentaire" class="block font-medium">Commentaire (optionnel) :</label>
-        <textarea wire:model="commentaire" id="commentaire" rows="2" class="w-full border rounded p-2"></textarea>
+        <textarea wire:model.live="commentaire" id="commentaire" rows="2" class="w-full border rounded p-2"></textarea>
     </div>
 
     <div class="flex justify-between m-4">
@@ -69,18 +69,20 @@
 
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const zone = document.getElementById('selectionZone');
+@script
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const zone = document.getElementById('selectionZone');
 
-        zone.addEventListener('mouseup', () => {
-            const selection = window.getSelection();
-            const selectedText = selection.toString().trim();
+            zone.addEventListener('mouseup', () => {
+                const selection = window.getSelection();
+                const selectedText = selection.toString().trim();
 
-            if (selectedText.length > 0) {
-                // Envoie seulement le texte sélectionné à Livewire
-                @this.set('texteModifiable', selectedText);
-            }
+                if (selectedText.length > 0) {
+                    // Envoie seulement le texte sélectionné à Livewire
+                    @this.set('texteModifiable', selectedText);
+                }
+            });
         });
-    });
-</script>
+    </script>
+@endscript

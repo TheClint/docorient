@@ -19,6 +19,8 @@ return new class extends Migration
 
             $table->foreignIdFor(User::class);  // Auteur de l'amendement
             $table->foreignIdFor(Statut::class);  // statut de l'amendement
+            $table->timestamp('vote_fermeture')->nullable(); // Prioritaire si défini
+
         });
     }
 
