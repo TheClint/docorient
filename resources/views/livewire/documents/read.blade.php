@@ -29,7 +29,9 @@
     
         <!-- Boutons à droite -->
         <div class="flex gap-4">
-            <x-button route="{{ route('amendements.create', ['documentId' => $document->id]) }}" label="Proposer un amendement" />
+            @if ($estAmendable)
+            <x-button route="{{ route('amendements.create', ['documentId' => $document->id]) }}" label="Proposer un amendement" />    
+            @endif
             <x-button route="{{ route('amendements.index', ['documentId' => $document->id]) }}" label="Voir les amendements" />
         </div>
     </div>

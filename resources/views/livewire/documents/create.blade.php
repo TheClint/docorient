@@ -1,8 +1,8 @@
-<div>
+<div class="space-y-4 w-full flex flex-col justify-between" style="min-height: calc(70vh)">
     
     <x-flash-messages />
 
-    <h1 class="text-xl font-bold mb-4">Créer un nouveau document</h1>
+    <h2 class="text-xl font-bold mb-4">Créer un nouveau document</h2>
 
 
     <!-- Formulaire de création -->
@@ -37,6 +37,6 @@
             @error('vote_fermeture') <span class="text-red-500">{{ $message }}</span> @enderror
         </div>
 
-        <button type="submit" class="bg-red-500 text-white px-4 py-2">Créer</button>
+        <button type="submit" class="bg-red-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-red-700 transition ease-in-out duration-300 transform hover:scale-105">Créer</button>
     </form>
 </div>

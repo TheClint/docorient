@@ -9,6 +9,7 @@ class Read extends Component
 {
     public $document;
     public $texte = ''; // Texte fusionné pour affichage
+    public $estAmendable = false;
 
     public function mount($document)
     {
@@ -20,6 +21,11 @@ class Read extends Component
             ->sortBy('id')
             ->pluck('texte')
             ->implode('');
+
+        // A faire : ajouter une condition sur un document déjà voté
+        $now = now();
+        if($this->document->amendement_ouverture < $now)
+            $this->estAmendable = true;
     }
 
     public function render()

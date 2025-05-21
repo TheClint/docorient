@@ -92,108 +92,12 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 
+"Fais une photographie exhaustive du contexte de cette conversation." ✅
 
-=======================
-RÉSUMÉ DE LA CONFIGURATION DU VOTE AUTOMATIQUE
-=======================
+"Donne-moi un résumé complet et structuré de tout ce qu’on a défini jusque-là." ✅
 
-📌 CONTEXTE GÉNÉRAL
------------------------
-- Application Laravel
-- Documents segmentés en plusieurs parties
-- Chaque segment peut recevoir des amendements
-- Les amendements sont soumis au vote des utilisateurs
-- À une date de clôture (`vote_fermeture`), les votes sont comptabilisés automatiquement
+"Synthétise-moi tout le contexte actuel de ce projet comme si je voulais le transmettre à un nouveau développeur." ✅
 
+"État complet du projet à ce stade de la discussion." ✅
 
-⚙️ FONCTIONNALITÉ PRINCIPALE : VoteService
-----------------------------------------------------
-Classe : App\Services\VoteService
-
-1. comptabiliserVoteDocument(Document $document)
-   - Récupère tous les segments du document
-   - Trouve les amendements associés
-   - Pour chaque amendement, appelle :
-
-2. comptabiliserVoteAmendement(Amendement $amendement)
-   - Récupère tous les votes
-   - Compte les "pour", "contre", "abstention"
-   - Calcule si la majorité est atteinte (> 50%)
-   - Met à jour le statut de l’amendement ("adopté" ou "rejeté")
-
-
-🧰 JOB AUTOMATIQUE : ComptabiliserVoteDocumentJob
-----------------------------------------------------------
-Fichier : App\Jobs\ComptabiliserVoteDocumentJob.php
-
-- Utilise VoteService pour exécuter le traitement
-- Peut être dispatché avec un délai :
-  ComptabiliserVoteDocumentJob::dispatch($document)->delay(...);
-
-
-📡 OBSERVER AUTOMATIQUE : DocumentObserver
-------------------------------------------------------------
-Fichier : App\Observers\DocumentObserver.php
-
-Méthode :
-public function saved(Document $document): void
-{
-    if ($document->vote_fermeture) {
-        $delayInSeconds = Carbon::parse($document->vote_fermeture)->diffInSeconds(now());
-        if ($delayInSeconds > 0) {
-            ComptabiliserVoteDocumentJob::dispatch($document)
-                ->delay(now()->addSeconds($delayInSeconds));
-        }
-    }
-}
-
-📎 Important : Ne se déclenche que si Document est "save()" en base
-
-
-🧪 TESTS EFFECTUÉS
--------------------------
-- ✅ Dispatch manuel dans Tinker :
-    use App\Models\Document;
-    use App\Jobs\ComptabiliserVoteDocumentJob;
-    $doc = Document::first();
-    ComptabiliserVoteDocumentJob::dispatch($doc);
-
-- ✅ Exécution réussie avec :
-    php artisan queue:work
-
-- ❌ `php artisan queue:listen` ne fonctionne pas avec les jobs différés (perd le delay à chaque redémarrage)
-
-
-📂 FICHIERS CRÉÉS OU MODIFIÉS
----------------------------------------
-- app/Services/VoteService.php → logique métier
-- app/Jobs/ComptabiliserVoteDocumentJob.php → job différé
-- app/Observers/DocumentObserver.php → déclenchement automatique
-- AppServiceProvider.php → enregistrement de l'observer
-- (facultatif) App\Console\Commands\VoteCheckCommand.php → commande d’overseer régulière
-
-
-✅ OBJECTIFS ATTEINTS
----------------------------
-- Traitement de vote automatisé ✅
-- Job planifié à la création ou modification d’un document ✅
-- Exécution des jobs via queue:work ✅
-
-
-📌 POINTS À COMPLÉTER
---------------------------
-- Implémenter la délégation de mandat
-- Ajouter un déclenchement manuel du vote (par le président)
-- Superviser `queue:work` en prod (avec Supervisor)
-- Tester plus finement `VoteService` (unitaires ou fonctionnels)
-
-
-✅ CONSEIL POUR TESTS
---------------------------
-Pour tester l’observer :
-$doc = Document::first();
-$doc->updated_at = now();
-$doc->save();
-
-Pour inspecter les logs :
-storage/logs/laravel.log
+"Documente-moi le contexte actuel du projet." ✅
