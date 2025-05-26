@@ -54,11 +54,11 @@
                 <tbody>
                     @foreach ($amendements as $index => $amendement)
                         <tr class="border-b">
-                            <td class="px-4 py-2">{{ $numero[$amendement->id] }}</td> {{-- Numéro --}}
-                            <td class="px-4 py-2">{{ \Carbon\Carbon::parse($amendement->created_at)->format('d/m/Y H:i') }}</td> {{-- Date formatée --}}
-                            <td class="px-4 py-2">{{ $amendement->user->name }}</td> {{-- Auteur --}}
-                            <td class="px-4 py-2">{{ $amendement->statut->libelle }}</td> {{-- Statut --}}
-                            <td class="px-4 py-2">
+                            <td class="px-4 py-2 text-center">{{ $numero[$amendement->id] }}</td> {{-- Numéro --}}
+                            <td class="px-4 py-2 text-center">{{ \Carbon\Carbon::parse($amendement->created_at)->format('d/m/Y H:i') }}</td> {{-- Date formatée --}}
+                            <td class="px-4 py-2 text-center">{{ $amendement->user->name }}</td> {{-- Auteur --}}
+                            <td class="px-4 py-2 text-center">{{ $amendement->statut->libelle }}</td> {{-- Statut --}}
+                            <td class="px-4 py-2 text-center">
                                 @if($amendement->commentaire)
                                     {{ \Str::limit($amendement->commentaire, 100) }} {{-- Affichage du commentaire avec un limite à 100 caractères --}}
                                 @else
@@ -66,7 +66,11 @@
                                 @endif
                             </td>
                             <td class="px-4 py-2 flex justify-center">
-                                    <x-button route="{{ route('amendements.read', ['amendement' => $amendement->id]) }}" label="Consulter" />
+                                @if ($mode === 'president')
+                                    <x-button route="" label="Mettre au vote" wire:click="mettreAuVote({{ $amendement->id }})" />
+                                @else
+                                    <x-button label="Consulter" :route="route('amendements.read', $amendement->id)" />
+                                @endif
                             </td>
                         </tr>
                     @endforeach

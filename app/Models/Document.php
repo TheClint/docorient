@@ -12,9 +12,12 @@ class Document extends Model
     protected $fillable = [
         'nom',
         'description',
+        'session_id',
         'user_id',
         'amendement_ouverture',
         'vote_fermeture',
+        'amendement_en_cours_id',
+        'mode_vote',
     ];
 
     public function createur(): BelongsTo

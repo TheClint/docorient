@@ -4,6 +4,7 @@ namespace App\Livewire\Documents;
 
 
 use App\Models\Segment;
+use App\Models\Session;
 use Livewire\Component;
 use App\Models\Document;
 use Illuminate\Support\Carbon;
@@ -16,6 +17,17 @@ class Create extends Component
     public $contenu;
     public $amendement_ouverture;
     public $vote_fermeture;
+    public bool $automatique = false;
+    public $sessions = [];
+    public $session;
+
+    public function mount()
+    {
+        // Récupère toutes les sessions à venir
+        $this->sessions = Session::where('ouverture', '>', Carbon::now())
+            ->orderBy('ouverture', 'asc')
+            ->get();
+    }
 
     // Fonction pour enregistrer le document
     public function save()
@@ -23,6 +35,7 @@ class Create extends Component
         // Validation des champs
         $this->validate([
             'nom' => 'required|string|max:255',
+            'session' => 'integer|exists:sessions_vote,id',
             'description' => 'nullable|string',
             'contenu' => 'required|string',
             'amendement_ouverture' => 'nullable|date',
@@ -33,6 +46,7 @@ class Create extends Component
         $document = Document::create([
             'nom' => $this->nom,
             'description' => $this->description,
+            'session_id' => $this->session,
             'user_id' => Auth::id(), // On associe l'ID de l'utilisateur connecté
             'amendement_ouverture' => Carbon::parse($this->amendement_ouverture, 'Europe/Paris')->setTimezone('UTC'),
             'vote_fermeture' => $this->vote_fermeture ? Carbon::parse($this->vote_fermeture, 'Europe/Paris')->setTimezone('UTC') : null,

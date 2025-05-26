@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\User;
-use App\Models\Session;
+use App\Models\Amendement;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('documents', function (Blueprint $table) {
+        Schema::create('sessions_vote', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('nom');
-            $table->text('description')->nullable();
+            $table->string('lieu');
+            // président
             $table->foreignIdFor(User::class);
-            $table->timestamp('amendement_ouverture')->nullable();
-            $table->timestamp('vote_fermeture')->nullable();
-            $table->foreignIdFor(Session::class)
+            $table->dateTime('ouverture');
+            $table->dateTime('fermeture')->nullable();
+            $table->foreignIdFor(Amendement::class)
                   ->nullable()
                   ->nullOnDelete();
         });
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('sessions_vote');
     }
 };

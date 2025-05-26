@@ -10,18 +10,18 @@ use App\Models\Amendement;
 
 class Index extends Component
 {
-    public int $documentId;
     public $document;
     public $segments;
     public $amendements;
     public $sortField = 'numero'; // Tri par défaut sur la position du premier segment
     public $sortDirection = 'asc'; // Tri croissant par défaut
     public $numero = []; // création d'un tableau de numero pour conserver l'ordre initial basé sur l'id du premier segment de l'amendement
+    public string $mode = 'index';
 
     
-    public function mount()
+    public function mount($documentId)
     {
-        $this->document = Document::find($this->documentId);
+        $this->document = Document::find($documentId);
         
         // Récupérer les segments de ce document
         $segmentIds = $this->document->segments->pluck('id');
@@ -89,7 +89,10 @@ class Index extends Component
         }, SORT_REGULAR, $this->sortDirection === 'desc');
     }
     
-
+    public function mettreAuVote($truc){
+        dd($truc);
+    }
+    
     public function render()
     {
         return view('livewire.amendements.index');

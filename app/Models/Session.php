@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Session extends Model
+{
+    protected $table = 'sessions_vote'; // fait le lien entre le modèle et la vraie table, car session est déjà utilisé par laravel
+
+    protected $casts = [
+        'ouverture' => 'datetime',
+        'fermeture' => 'datetime',
+    ];
+
+    protected $fillable = [
+        'lieu',
+        'nom',
+        'user_id',
+        'ouverture',
+        'fermeture',
+    ];
+
+    public function president(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function enCours(): BelongsTo
+    {
+        return $this->belongsTo(Amendement::class);
+    }
+}
