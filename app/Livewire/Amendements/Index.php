@@ -89,8 +89,9 @@ class Index extends Component
         }, SORT_REGULAR, $this->sortDirection === 'desc');
     }
     
-    public function mettreAuVote($truc){
-        dd($truc);
+    // renvoi de l'amendement vers le composant president
+    public function mettreAuVote($amendementId){
+        $this->dispatch('amendementChoisi', $amendementId);
     }
     
     public function render()

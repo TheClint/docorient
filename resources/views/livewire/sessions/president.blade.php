@@ -1,35 +1,59 @@
-<div wire:poll.3s="poll" class="p-6 space-y-6">
-    
-    <h2 class="text-2xl font-bold">{{ $session->nom }}</h2>
+<div wire:poll.3s="poll" class="flex flex-col w-screen justify-between min-h-[70vh]">
 
-    <div>
-        @if($documentEnCours)
-            <livewire:amendements.index :document-id="$documentEnCours" mode="president" />
-            @if($amendementEnCours)
-                <div class="p-4 bg-white rounded shadow">
-                    <h3 class="text-xl font-semibold">Amendement #{{ $amendementEnCours->id }}</h3>
-                    <p>{{ $amendementEnCours->description }}</p>
+    {{-- 🔹 Titre de la session --}}
+    <h2 class="text-3xl font-bold text-center mb-6">
+        Session : {{ $session->nom }}
+    </h2>
 
-                    @if($voteEnCours)
-                        <div class="mt-4 text-yellow-600 font-bold">
-                            🕒 Vote en cours... Clôture à {{ $amendementEnCours->vote_fermeture->format('H:i:s') }}
-                        </div>
-                    @elseif($voteTermine && $resultatVote)
-                        <div class="mt-4 text-green-700 font-bold">
-                            ✅ Vote terminé : <span class="uppercase">{{ $resultatVote }}</span>
-                        </div>
+    {{-- 🔹 Sous-cadre fixe pour l'état de la session --}}
+    <div class="mx-auto w-full max-w-7xl h-[60vh] bg-white shadow rounded-2xl p-6 overflow-y-auto">
+        @if ($documentEnCours)
+            @if ($amendementEnCours)
 
-                        <button wire:click="passerAmendementSuivant"
-                                class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                            ➡️ Passer à l'amendement suivant
-                        </button>
+                @if (is_null($session->amendement_id))
+                    {{-- Étape 1 : Choix du document --}}
+                    @if (is_null($documentEnCours))
+                        <livewire:sessions.choix-document :session-id="$session->id" />
                     @else
-                        <button wire:click="lancerVote"
-                                class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                            🟢 Lancer le vote
-                        </button>
+                        {{-- Étape 2 : Choix de l’amendement dans le document sélectionné --}}
+                        <livewire:amendements.index :document-id="$documentEnCours" mode="president" />
                     @endif
-                </div>
+                @else
+                    {{-- Étape 3 : Contrôle du vote sur l’amendement sélectionné --}}
+                    @if ($amendementEnCours)
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">
+                                📝 Amendement #{{ $amendementEnCours->id }}
+                            </h3>
+                            <p class="text-gray-700 mb-4">{{ $amendementEnCours->description }}</p>
+        
+                            @if ($voteEnCours)
+                                <div class="text-yellow-700 font-bold">
+                                    🕒 Vote en cours — Clôture à :
+                                    {{ \Carbon\Carbon::parse($amendementEnCours->vote_fermeture)->format('H:i:s') }}
+                                </div>
+                            @elseif ($voteTermine && $resultatVote)
+                                <div class="text-green-700 font-bold">
+                                    ✅ Vote terminé : <span class="uppercase">{{ $resultatVote }}</span>
+                                </div>
+        
+                                <button wire:click="passerAmendementSuivant"
+                                        class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                                    ➡️ Passer à l'amendement suivant
+                                </button>
+                            @else
+                                <button wire:click="lancerVote"
+                                        class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                                    🟢 Lancer le vote
+                                </button>
+                            @endif
+                        </div>
+                    @else
+                        <p class="text-red-600">Aucun amendement trouvé.</p>
+                    @endif
+                @endif
+            @else
+                <livewire:amendements.index :document-id="$documentEnCours" mode="president" />
             @endif
         @else
             <livewire:sessions.choix-document :session-id="$session->id" />

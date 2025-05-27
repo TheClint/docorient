@@ -39,8 +39,8 @@ class Create extends Component
             'lieu' => $this->lieu,
             'nom' => $this->nom,
             'user_id' => $this->president,
-            'ouverture' => Carbon::parse($this->ouverture, 'Europe/Paris')->setTimezone('UTC'),
-            $this->fermeture ? Carbon::parse($this->fermeture, 'Europe/Paris')->setTimezone('UTC') : null,
+            'ouverture' => Carbon::parse($this->ouverture, 'Europe/Paris'),
+            $this->fermeture ? Carbon::parse($this->fermeture, 'Europe/Paris') : null,
         ]);
 
         // Message flash pour la réussite

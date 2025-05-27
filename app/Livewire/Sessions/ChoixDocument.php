@@ -22,7 +22,7 @@ class ChoixDocument extends Component
                                 })->get();
     }
 
-    public function choixAmendementEnCours($documentId){
+    public function choixDocumentEnCours($documentId){
         $this->dispatch('documentChoisi', $documentId);
     }
 

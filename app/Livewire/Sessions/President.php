@@ -19,15 +19,15 @@ class President extends Component
     public bool $voteTermine = false;
     public bool $voteEnCours = false;
     public ?string $resultatVote = null;
-    protected $listeners = ['documentChoisi'];
+    protected $listeners = ['documentChoisi', 'amendementChoisi'];
+    
 
     public function mount($sessionId)
     {
         
         $this->session = Session::find($sessionId);
-        $this->amendementEnCours = $this->session->amendement_id;
 
-        //$this->chargerAmendementEnCours();
+        $this->chargerAmendementEnCours();
     }
 
 
@@ -37,24 +37,33 @@ class President extends Component
         $this->documentEnCours = $documentId;
     }
 
+    public function amendementChoisi($amendementId)
+    {
+        // Récupération de l'amendement choisi
+        $this->session->amendement_id = $amendementId;
+        $this->session->save();
+        $this->chargerAmendementEnCours();
+    }
+
     public function chargerAmendementEnCours(): void
     {
-        if ($this->document->amendement_id) {
-            $this->amendementEnCours = Amendement::find($this->document->amendement_en_cours_id);
+        if ($this->session->amendement_id) {
+            $this->amendementEnCours = Amendement::find($this->session->amendement_id);
 
             if ($this->amendementEnCours) {
                 $this->voteEnCours = $this->amendementEnCours->vote_fermeture && now()->lt($this->amendementEnCours->vote_fermeture);
                 $this->voteTermine = $this->amendementEnCours->vote_fermeture && now()->gt($this->amendementEnCours->vote_fermeture);
 
                 if ($this->voteTermine && $this->amendementEnCours->statut_id === Statut::whereLibelle('non voté')->first()?->id) {
-                    VoteService::comptabiliserVoteAmendement($this->amendementEnCours);
+                    //VoteService::comptabiliserVoteAmendement($this->amendementEnCours);
                     $this->amendementEnCours->refresh();
                     $this->resultatVote = $this->amendementEnCours->statut->libelle;
                 }
             }
         } else {
             // Si aucun amendement en cours, on charge le prochain
-            $this->chargerProchainAmendement();
+            //dd("suite");
+            //$this->chargerProchainAmendement();
         }
     }
 
@@ -66,7 +75,7 @@ class President extends Component
         $this->amendementEnCours->save();
         $this->voteEnCours = true;
     }
-
+/*
     public function passerAmendementSuivant(): void
     {
         $this->resultatVote = null;
@@ -94,7 +103,7 @@ class President extends Component
             $this->amendementEnCours = null;
             $this->document->update(['amendement_en_cours_id' => null]);
         }
-    }
+    }*/
 
     public function render()
     {

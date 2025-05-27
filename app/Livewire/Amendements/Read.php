@@ -23,6 +23,7 @@ class Read extends Component
 
     public function mount($amendement)
     {
+
         // Récupère l'amendement
         $this->amendement = Amendement::with('modifications')->findOrFail($amendement);
 

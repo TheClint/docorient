@@ -14,7 +14,7 @@
     @if ($prochaineEtape)
         <div
             id="compte-rebours"
-            data-prochaine-etape="{{ \Carbon\Carbon::parse($prochaineEtape)->timestamp }}"
+            data-prochaine-etape="{{ $prochaineEtape->timestamp }}"
             class="text-sm text-gray-600 my-2"
         >
             Chargement du compte à rebours...

@@ -1,4 +1,4 @@
-<div class="flex flex-col w-screen justify-between min-h-[70vh]">
+<div class="flex flex-col w-full justify-between min-h-[70vh]">
 
     
 

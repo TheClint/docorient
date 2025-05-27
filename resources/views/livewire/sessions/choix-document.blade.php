@@ -28,7 +28,7 @@
                         <x-button
                             route=""
                             label="Choisir"
-                            wire:click="choixAmendementEnCours({{ $document->id }})"
+                            wire:click="choixDocumentEnCours({{ $document->id }})"
                         />
                     </div>
                 </div>

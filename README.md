@@ -21,6 +21,9 @@ pour migrer les databases
 # pour lancer le serveur
 php artisan serve
 
+# pour que les jobs se lancent automatiquement
+php artisan queue:work
+
 
 
 
