@@ -4,7 +4,6 @@ namespace App\Observers;
 
 use App\Models\Document;
 use App\Jobs\ComptabiliserVoteDocumentJob;
-use Carbon\Carbon;
 
 class DocumentObserver
 {

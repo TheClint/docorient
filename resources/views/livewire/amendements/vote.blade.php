@@ -86,11 +86,9 @@
                 el._interval = setInterval(updateAffichage, 1000);
             };
         
-            // Lance une fois au chargement DOM
-            document.addEventListener('DOMContentLoaded', () => {
-                window.lancerCompteRebours();
-            });
-        
+            // Lance une fois quand le component est chargé
+            window.lancerCompteRebours();
+
             // Relance après chaque message Livewire traité
             if (window.Livewire) {
                 window.Livewire.hook('message.processed', () => {

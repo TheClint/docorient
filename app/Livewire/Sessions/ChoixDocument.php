@@ -5,7 +5,6 @@ namespace App\Livewire\Sessions;
 use App\Models\Session;
 use Livewire\Component;
 use App\Models\Document;
-use Illuminate\Database\Eloquent\Collection;
 
 class ChoixDocument extends Component
 {

@@ -7,9 +7,6 @@ use App\Models\Session;
 use Livewire\Component;
 use App\Models\Document;
 use App\Models\Amendement;
-use App\Services\VoteService;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 class President extends Component
 {
@@ -19,22 +16,23 @@ class President extends Component
     public bool $voteTermine = false;
     public bool $voteEnCours = false;
     public ?string $resultatVote = null;
-    protected $listeners = ['documentChoisi', 'amendementChoisi'];
+    protected $listeners = ['documentChoisi', 'amendementChoisi', 'lancerVote'];
     
 
     public function mount($sessionId)
     {
-        
         $this->session = Session::find($sessionId);
 
         $this->chargerAmendementEnCours();
+       
+        $this->documentEnCours = ($this->amendementEnCours) ? $this->amendementEnCours->modifications()->with('document')->first()?->document : null;
     }
 
 
     public function documentChoisi($documentId)
     {
         // Récupération du document choisi
-        $this->documentEnCours = $documentId;
+        $this->documentEnCours = Document::find($documentId);
     }
 
     public function amendementChoisi($amendementId)
@@ -42,6 +40,7 @@ class President extends Component
         // Récupération de l'amendement choisi
         $this->session->amendement_id = $amendementId;
         $this->session->save();
+        $this->amendementEnCours = null;
         $this->chargerAmendementEnCours();
     }
 
@@ -55,15 +54,10 @@ class President extends Component
                 $this->voteTermine = $this->amendementEnCours->vote_fermeture && now()->gt($this->amendementEnCours->vote_fermeture);
 
                 if ($this->voteTermine && $this->amendementEnCours->statut_id === Statut::whereLibelle('non voté')->first()?->id) {
-                    //VoteService::comptabiliserVoteAmendement($this->amendementEnCours);
                     $this->amendementEnCours->refresh();
                     $this->resultatVote = $this->amendementEnCours->statut->libelle;
                 }
             }
-        } else {
-            // Si aucun amendement en cours, on charge le prochain
-            //dd("suite");
-            //$this->chargerProchainAmendement();
         }
     }
 
@@ -73,37 +67,20 @@ class President extends Component
 
         $this->amendementEnCours->vote_fermeture = now()->addSeconds(30);
         $this->amendementEnCours->save();
-        $this->voteEnCours = true;
+        $this->dispatch('reloadRead');
     }
-/*
+
     public function passerAmendementSuivant(): void
     {
-        $this->resultatVote = null;
+        $this->amendementEnCours = null;
 
-        // Marque l'amendement actuel comme terminé (déjà fait si comptabilisé)
-        $this->chargerProchainAmendement();
+        // vérification s'il existe encore un amendement à voter dans le document en cours
+        if(!Document::where('id', $this->documentEnCours->id)
+            ->whereHas('segments.modifications.statut', function ($query) {
+                $query->where('libelle', 'non voté');
+            })->exists())
+            $this->documentEnCours = null;
     }
-
-    public function chargerProchainAmendement(): void
-    {
-        $prochain = Amendement::whereHas('modifications', function ($query) {
-                $query->whereIn('segments.id', $this->document->segments->pluck('id'));
-            })
-            ->where('statut_id', Statut::whereLibelle('non voté')->first()?->id)
-            ->orderBy('id')
-            ->first();
-
-        if ($prochain) {
-            $this->document->update(['amendement_en_cours_id' => $prochain->id]);
-            $this->amendementEnCours = $prochain;
-            $this->voteEnCours = false;
-            $this->voteTermine = false;
-        } else {
-            // Fin de session : plus d'amendement
-            $this->amendementEnCours = null;
-            $this->document->update(['amendement_en_cours_id' => null]);
-        }
-    }*/
 
     public function render()
     {
@@ -112,6 +89,7 @@ class President extends Component
 
     public function poll()
     {
-       // $this->chargerAmendementEnCours();
+        // force l'actualisation de tous les components en attendant une technologie plus complète comme websocket
     }
+
 }

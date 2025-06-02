@@ -73,6 +73,7 @@ class Vote extends Component
 
     public function voter(string $choix)
     {
+        logger("Vote reçu : $choix");
         // Vérifie si l'état du vote au moment du clic
         $this->etatVote = $this->etatVote();
 
@@ -101,7 +102,7 @@ class Vote extends Component
     }
 
     public function getProchaineEtapeTimestampProperty()
-{
-    return $this->prochaineEtape ? \Carbon\Carbon::parse($this->prochaineEtape)->timestamp : null;
-}
+    {
+        return $this->prochaineEtape ? \Carbon\Carbon::parse($this->prochaineEtape)->timestamp : null;
+    }
 }

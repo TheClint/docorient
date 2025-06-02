@@ -28,6 +28,7 @@
                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                 @endforeach
             </select>
+            @error('president') <span class="text-red-500">{{ $message }}</span> @enderror
         </div>
 
         <div>
