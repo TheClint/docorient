@@ -1,25 +1,21 @@
 <?php
 
-use App\Models\Document;
+use App\Livewire\Actions\Logout;
 
-use App\Models\Amendement;
-use App\Services\VoteService;
-
-use App\Http\Middleware\IsPresident;
-use Illuminate\Support\Facades\Route;
-
-use App\Livewire\Documents\Create as DocumentsCreate;
-use App\Livewire\Documents\Edit as DocumentsEdit;
-use App\Livewire\Documents\Read as DocumentsRead;
-use App\Livewire\Documents\Index as DocumentsIndex;
-
-use App\Livewire\Amendements\Read as AmendementsRead;
-use App\Livewire\Amendements\Index as AmendementsIndex;
-use App\Livewire\Amendements\Create as AmendementsCreate;
-
-use App\Livewire\Sessions\Create as SessionsCreate;
 use App\Livewire\Sessions\Membre;
 use App\Livewire\Sessions\President;
+use Illuminate\Support\Facades\Route;
+use App\Livewire\Documents\Edit as DocumentsEdit;
+
+use App\Livewire\Documents\Read as DocumentsRead;
+use App\Livewire\Sessions\Index as SessionsIndex;
+use App\Livewire\Documents\Index as DocumentsIndex;
+
+use App\Livewire\Sessions\Create as SessionsCreate;
+use App\Livewire\Amendements\Read as AmendementsRead;
+use App\Livewire\Documents\Create as DocumentsCreate;
+use App\Livewire\Amendements\Index as AmendementsIndex;
+use App\Livewire\Amendements\Create as AmendementsCreate;
 
 Route::view('/', 'welcome')->name('welcome');
 
@@ -33,6 +29,14 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
+Route::post('/logout', function (Logout $logout) {
+    $logout(); // appelle la méthode __invoke() de ta classe Logout
+
+    return redirect('/'); // redirection après logout
+    })
+    ->middleware('auth')
+    ->name('logout');
+
     
     Route::middleware(['auth'])->group(function () {
         Route::get('/documents', DocumentsIndex::class)->name('documents.index');
@@ -44,23 +48,11 @@ Route::view('profile', 'profile')
         Route::get('/documents/{documentId}/amendements/create', AmendementsCreate::class)->name('amendements.create');
         Route::get('/amendements/{amendement}', AmendementsRead::class)->name('amendements.read');
 
-        Route::get('/sessions/{sessionId}/president', President::class)->name('sessions.president')->middleware(['auth', IsPresident::class]);
-        Route::get('/sessions/membre', Membre::class);
+        Route::get('/sessions/{sessionId}/president', President::class)->name('sessions.president')->middleware(['auth', 'president', 'session.en.cours']);
+        Route::get('/sessions/{sessionId}/membre', Membre::class)->name('sessions.membre')->middleware('session.en.cours');
 
         Route::get('/sessions/ajouter', SessionsCreate::class)->name('sessions.create');
-        
-        // temporaire
-        Route::get('/test/vote/{amendement}', function (Amendement $amendement) {
-            VoteService::comptabiliserVoteAmendement($amendement);
-                
-            return 'Vote comptabilisé pour l’amendement #' . $amendement->id;
-        })->name('test.vote');
-        Route::get('/test/voteD/{document}', function (Document $document) {
-            VoteService::comptabiliserVoteDocument($document);
-
-            return 'Vote comptabilisé pour le document #' . $document->id;
-        })->name('test.voteD');
-        // fin Temporaire
+        Route::get('/sessions', SessionsIndex::class)->name('sessions.index');
 });
 
 require __DIR__.'/auth.php';

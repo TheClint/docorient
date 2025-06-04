@@ -1,7 +1,6 @@
 
 <div class="container">
     <x-flash-messages />
-
     <div class="flex flex-row justify-around m-4 mb-8">
         <livewire:amendements.vignette :document="$document" :amendement="$amendement" />
 

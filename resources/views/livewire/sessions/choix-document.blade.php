@@ -1,5 +1,5 @@
-<div>
-    <div>
+<div class="h-full">
+    <div class="h-full">
         @if($documents->isNotEmpty())
         <h2 class="my-2">Choisir le prochain document a amender</h2>
         <div class="flex gap-4">
@@ -35,9 +35,15 @@
             @endforeach
         </div>
         @else
-            <div class="p-4 bg-white rounded shadow text-gray-700">
-                Tous les documents ont été traités.
+            <div class="p-4 bg-white h-full rounded shadow text-gray-700 flex flex-col justify-between">
+                <p>
+                    Tous les documents ont été traités.
+                </p>
+                <div class="flex justify-end">
+                    <x-button route="" label="Clore la session" wire:click="cloreLaSession()" />
+                </div>
             </div>
+        
         @endif
     </div>
     

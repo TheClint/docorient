@@ -42,6 +42,12 @@ new class extends Component
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('sessions.index')" :active="request()->routeIs('sessions.index')" wire:navigate>
+                        {{ __('Mes sessions') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('documents.index')" wire:navigate>
                         {{ __('Mes amendements') }}
                     </x-nav-link>
@@ -75,11 +81,14 @@ new class extends Component
                         </x-dropdown-link>
 
                         <!-- Authentication -->
-                        <button wire:click="logout" class="w-full text-start">
-                            <x-dropdown-link>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="w-full text-start">
+                                <x-dropdown-link>
                                 {{ __('Déconnexion') }}
-                            </x-dropdown-link>
-                        </button>
+                                </x-dropdown-link>
+                            </button>
+                        </form>
                     </x-slot>
                 </x-dropdown>
             </div>
@@ -117,11 +126,14 @@ new class extends Component
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
-                <button wire:click="logout" class="w-full text-start">
-                    <x-responsive-nav-link>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="w-full text-start">
+                        <x-dropdown-link>
                         {{ __('Déconnexion') }}
-                    </x-responsive-nav-link>
-                </button>
+                        </x-dropdown-link>
+                    </button>
+                </form>
             </div>
         </div>
     </div>

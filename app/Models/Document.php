@@ -29,5 +29,10 @@ class Document extends Model
     {
         return $this->hasMany(Segment::class);
     }
+
+    public function session()
+    {
+        return $this->belongsTo(Session::class);
+    }
 }
 

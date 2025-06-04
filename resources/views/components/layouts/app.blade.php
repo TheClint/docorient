@@ -26,11 +26,13 @@
                 {{ $footer }}
             @else
                 <div class="max-w-7xl mx-auto px-4 py-6 text-center text-gray-500 text-sm">
-                    &copy; {{ date('Y') }} DocOrient. Tous droits réservés.
+                    &copy; {{ date('Y') }} DocOrient. Tous le pouvoir aux Soviets.
                 </div>
             @endisset
         </footer>
 
         @vite('resources/js/app.js')
+        @stack('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </body>
 </html>

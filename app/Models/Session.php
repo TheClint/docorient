@@ -31,4 +31,9 @@ class Session extends Model
     {
         return $this->belongsTo(Amendement::class);
     }
+
+        public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
 }

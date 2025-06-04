@@ -25,6 +25,10 @@ class ChoixDocument extends Component
         $this->dispatch('documentChoisi', $documentId);
     }
 
+    public function cloreLaSession(){
+        $this->dispatch('cloreLaSession');
+    }
+
     public function render()
     {
         return view('livewire.sessions.choix-document');

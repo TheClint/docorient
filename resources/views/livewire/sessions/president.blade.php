@@ -11,7 +11,17 @@
                 @if($amendementEnCours->statut->libelle === "non voté")
                     <livewire:amendements.read :amendement="$amendementEnCours" mode="session"/>
                 @else
-                    <x-button route="" label="suivant" wire:click="passerAmendementSuivant()" />
+                <div class="flex w-full h-full">
+                    {{-- 🟢 Résultat du vote à gauche --}}
+                    <div class="flex-1 h-full">
+                        <livewire:amendements.resultat :amendementId="$amendementEnCours->id" />
+                    </div>
+                
+                    {{-- 🔵 Bouton "Suivant" centré verticalement à droite --}}
+                    <div class="w-[200px] flex items-center justify-center h-full">
+                        <x-button route="" label="Suivant" wire:click="passerAmendementSuivant()" />
+                    </div>
+                </div>                
                 @endif
             @else
                 <livewire:amendements.tableau-index :document="$documentEnCours" mode="session"/>

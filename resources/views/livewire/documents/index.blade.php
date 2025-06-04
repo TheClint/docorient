@@ -2,7 +2,7 @@
 
     <x-flash-messages />
 
-    <h1 class="text-xl font-bold mb-4">Liste des documents</h1>
+    <h2 class="text-xl font-bold mb-4">Liste des documents</h2>
 
     <!-- Lien vers la page de création -->
     <div class = "my-8">

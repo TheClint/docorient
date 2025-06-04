@@ -13,10 +13,7 @@ class President extends Component
     public Session $session;
     public $documentEnCours;
     public ?Amendement $amendementEnCours = null;
-    public bool $voteTermine = false;
-    public bool $voteEnCours = false;
-    public ?string $resultatVote = null;
-    protected $listeners = ['documentChoisi', 'amendementChoisi', 'lancerVote'];
+    protected $listeners = ['documentChoisi', 'amendementChoisi', 'lancerVote', 'passerAmendementSuivant', 'cloreLaSession'];
     
 
     public function mount($sessionId)
@@ -48,16 +45,6 @@ class President extends Component
     {
         if ($this->session->amendement_id) {
             $this->amendementEnCours = Amendement::find($this->session->amendement_id);
-
-            if ($this->amendementEnCours) {
-                $this->voteEnCours = $this->amendementEnCours->vote_fermeture && now()->lt($this->amendementEnCours->vote_fermeture);
-                $this->voteTermine = $this->amendementEnCours->vote_fermeture && now()->gt($this->amendementEnCours->vote_fermeture);
-
-                if ($this->voteTermine && $this->amendementEnCours->statut_id === Statut::whereLibelle('non voté')->first()?->id) {
-                    $this->amendementEnCours->refresh();
-                    $this->resultatVote = $this->amendementEnCours->statut->libelle;
-                }
-            }
         }
     }
 
@@ -80,6 +67,14 @@ class President extends Component
                 $query->where('libelle', 'non voté');
             })->exists())
             $this->documentEnCours = null;
+    }
+
+    public function cloreLaSession()
+    {
+        $this->session->fermeture = now();
+        $this->session->save();
+
+        return redirect()->route('sessions.index');
     }
 
     public function render()
