@@ -57,32 +57,35 @@ class Create extends Component
         $i = 0;
         while($i < strlen($this->contenu)){
             $finSegment = 0;
-            // définition d'un segment de 50 caractère plus le reste du mot entrecoupé par le curseur
             $reste = strpos(substr($this->contenu, $i+50), " ");
-            
-            // calcul de la position d'un retour à la ligne sur ce segment s'il existe
+            $reste = $reste === false ? 0 : $reste;
+        
             $positionRetourLigne = strpos(substr($this->contenu, $i ,50+$reste), "\n");
-
-            // calcul de la fin du segment effectif
+        
             if($positionRetourLigne !== false){
                 if($positionRetourLigne != 0){
                     $finSegment = $positionRetourLigne;
-                }else{
+                } else {
                     $compteurRetourLigne = 0;
-                    while($this->contenu[$i+$compteurRetourLigne] == "\n")
+                    while(($i + $compteurRetourLigne) < strlen($this->contenu) && $this->contenu[$i+$compteurRetourLigne] == "\n")
                         $compteurRetourLigne++;
                     $finSegment = $compteurRetourLigne;
-                }     
-            }
-            else
+                }
+            } else {
                 $finSegment = 50 + $reste;
-
+            }
+        
+            if ($finSegment <= 0) {
+                $finSegment = min(50, strlen($this->contenu) - $i);
+            }
+        
             Segment::create([
                 'texte' => substr($this->contenu, $i, $finSegment),
                 'document_id' => $document->id,
             ]);
             $i += $finSegment;
         }
+        
         // Message flash pour la réussite
         session()->flash('success', 'Document créé avec succès.');
 

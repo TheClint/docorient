@@ -19,8 +19,8 @@ class Vote extends Component
 
     public function mount(Amendement $amendement)
     {
-        $this->amendement = Amendement::with('modifications')->findOrFail($amendement->id);
-        $this->document = Document::find($this->amendement->modifications->first()->document_id);
+        $this->amendement = Amendement::with('propositions')->findOrFail($amendement->id);
+        $this->document = Document::find($this->amendement->propositions->first()->document_id);
 
         // recherche le vote de fermeture s'il existe
         $this->vote_fermeture = $this->document?->vote_fermeture;

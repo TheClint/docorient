@@ -23,7 +23,7 @@
                 {!! nl2br(e($segment->texte)) !!}
             @endif
         @endforeach
-        {!! $formattedTextOriginal !!}
+        {!! nl2br($formattedTextOriginal) !!}
         @foreach ($segmentsApres as $segment)
             @if($segment->texte[0] == "\n")
                 </span> 
@@ -50,7 +50,7 @@
                 {!! nl2br(e($segment->texte)) !!}
             @endif
         @endforeach
-        {!! $formattedTextAmende !!}
+        {!! nl2br($formattedTextAmende) !!}
         @foreach ($segmentsApres as $segment)
             @if($segment->texte[0] == "\n")
                 </span> 

@@ -38,7 +38,7 @@
         </div>
     @endif
 
-    {{-- Champ de modification --}}
+    {{-- Champ de proposition --}}
     <div class="mt-4 space-y-2">
         <label class="block font-medium">Amendement :</label>
     

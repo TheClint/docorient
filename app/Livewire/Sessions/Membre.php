@@ -19,7 +19,7 @@ class Membre extends Component
 
         $this->chargerAmendementEnCours();
        
-        $this->documentEnCours = ($this->amendementEnCours) ? $this->amendementEnCours->modifications()->with('document')->first()?->document : null;
+        $this->documentEnCours = ($this->amendementEnCours) ? $this->amendementEnCours->propositions()->with('document')->first()?->document : null;
     }
 
     public function chargerAmendementEnCours(): void
@@ -41,7 +41,7 @@ class Membre extends Component
         // force l'actualisation de tous les components en attendant une technologie plus complète comme websocket
         $this->chargerAmendementEnCours();
        
-        $this->documentEnCours = ($this->amendementEnCours) ? $this->amendementEnCours->modifications()->with('document')->first()?->document : null;
+        $this->documentEnCours = ($this->amendementEnCours) ? $this->amendementEnCours->propositions()->with('document')->first()?->document : null;
 
         $this->render();
     }

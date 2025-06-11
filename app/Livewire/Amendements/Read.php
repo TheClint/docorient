@@ -7,6 +7,7 @@ use App\Models\Session;
 use Livewire\Component;
 use App\Models\Document;
 use App\Models\Amendement;
+use App\Services\TexteService;
 use Illuminate\Support\Facades\Auth;
 
 class Read extends Component
@@ -24,7 +25,7 @@ class Read extends Component
         $this->amendement = $amendement;
 
         // récupération de l'id du document associé au premier segment de l'amendement
-        $documentId = $this->amendement->modifications[0]->document->id;
+        $documentId = $this->amendement->propositions[0]->document->id;
 
         $this->document = Document::find($documentId);
 
@@ -69,5 +70,9 @@ class Read extends Component
     public function render()
     {
         return view('livewire.amendements.read');
+    }
+
+    public function test($amendementId){
+        TexteService::modificationDocument($amendementId);
     }
 }

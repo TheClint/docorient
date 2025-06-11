@@ -60,9 +60,9 @@ class VoteService
         $amendement->statut_id = Statut::whereLibelle($resultat)->first()->id;
         
         $amendement->save();
-        
 
-        
+        if($resultat == "adopté")
+            TexteService::modificationDocument($amendement);  
     }
 
     // fonction de comptabilisation des votes pour tous les amendements d'un document
@@ -72,7 +72,7 @@ class VoteService
         $segmentIds = $document->segments->pluck('id');
         
         // Récupérer les amendements associés à ces segments
-        $amendements = Amendement::whereHas('modifications', function ($query) use ($segmentIds) {
+        $amendements = Amendement::whereHas('propositions', function ($query) use ($segmentIds) {
             $query->whereIn('segments.id', $segmentIds);
         })
         ->get();

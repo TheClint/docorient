@@ -16,7 +16,7 @@ class ChoixDocument extends Component
     {
         $this->session = Session::find($sessionId);
         $this->documents = Document::where('session_id', $sessionId)
-                                ->whereHas('segments.modifications.statut', function ($query) {
+                                ->whereHas('segments.propositions.statut', function ($query) {
                                 $query->where('libelle', 'non voté'); // adapte le champ ici si besoin
                                 })->get();
     }

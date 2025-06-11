@@ -22,7 +22,7 @@ class President extends Component
 
         $this->chargerAmendementEnCours();
        
-        $this->documentEnCours = ($this->amendementEnCours) ? $this->amendementEnCours->modifications()->with('document')->first()?->document : null;
+        $this->documentEnCours = ($this->amendementEnCours) ? $this->amendementEnCours->propositions()->with('document')->first()?->document : null;
     }
 
 
@@ -63,7 +63,7 @@ class President extends Component
 
         // vérification s'il existe encore un amendement à voter dans le document en cours
         if(!Document::where('id', $this->documentEnCours->id)
-            ->whereHas('segments.modifications.statut', function ($query) {
+            ->whereHas('segments.propositions.statut', function ($query) {
                 $query->where('libelle', 'non voté');
             })->exists())
             $this->documentEnCours = null;

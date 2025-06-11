@@ -64,7 +64,7 @@ class Create extends Component
             $this->validate([
                 'segmentDebutId' => 'required|exists:segments,id',
                 'segmentFinId' => 'required|exists:segments,id',
-                'texteModifiable' => 'required|string',
+                'texteModifiable' => 'string',
                 'commentaire' => 'nullable|string',
             ]);
             
@@ -91,7 +91,7 @@ class Create extends Component
                         array_push($tableauIdSegmentsAmende, $segment->id);
                 }
 
-                $amendement->modifications()->attach($tableauIdSegmentsAmende);
+                $amendement->propositions()->attach($tableauIdSegmentsAmende);
 
                 session()->flash('success', 'Amendement proposé avec succès.');
 

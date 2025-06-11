@@ -32,7 +32,7 @@ class TableauIndex extends Component
         $segmentIds = $this->document->segments->pluck('id');
         
         // Récupérer les amendements associés à ces segments
-        $this->amendements = Amendement::whereHas('modifications', function ($query) use ($segmentIds) {
+        $this->amendements = Amendement::whereHas('propositions', function ($query) use ($segmentIds) {
             $query->whereIn('segments.id', $segmentIds);
         })
         ->with(['user', 'statut'])  // Charger les relations 'user' et 'statut' directement
@@ -41,7 +41,7 @@ class TableauIndex extends Component
         // Charger le premier segment pour chaque amendement
         
         foreach ($this->amendements as $amendement) {
-            $amendement->premierSegment = Segment::whereHas('modifications', function ($query) use ($amendement) {
+            $amendement->premierSegment = Segment::whereHas('propositions', function ($query) use ($amendement) {
                 $query->where('amendement_id', $amendement->id);
             })
             ->orderBy('id')

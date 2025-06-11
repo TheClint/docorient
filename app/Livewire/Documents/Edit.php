@@ -26,7 +26,7 @@ class Edit extends Component
         $this->vote_fermeture = (new DateTime($doc->amendement_ouverture))->format('Y-m-d\TH:i');
     }
 
-    // Sauvegarde des modifications
+    // Sauvegarde des propositions
     public function update()
     {
         $this->validate([

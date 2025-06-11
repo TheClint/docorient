@@ -37,10 +37,9 @@
         </div>
     </div>
    
-    @push('scripts')
-    <script>
+    @script
+    <script> 
         function renderVoteChart() {
-            console.log("coucou");
             const canvas = document.getElementById('voteChart');
 
             const ctx = canvas.getContext('2d');
@@ -70,7 +69,7 @@
         document.addEventListener('DOMContentLoaded', renderVoteChart);
         
     </script>
-    @endpush
+    @endscript
     
 </div>
 

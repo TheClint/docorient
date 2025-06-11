@@ -35,9 +35,9 @@ class Amendement extends Model
                     ->withTimestamps();
     }
 
-    public function modifications(): BelongsToMany
+    public function propositions(): BelongsToMany
     {
-        return $this->belongsToMany(Segment::class)->as('modification');
+        return $this->belongsToMany(Segment::class)->as('proposition');
     }
 
 }
