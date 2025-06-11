@@ -7,7 +7,6 @@ use App\Models\Statut;
 use App\Models\Document;
 use App\Models\Amendement;
 
-
 class VoteService
 {
     // fonction de comptabilisation d'un vote pour un amendement

@@ -7,15 +7,13 @@ use App\Models\Modification;
 
 class TexteService{
 
-    public static function modificationDocument($amendementId)
+    public static function modificationDocument(Amendement $amendement)
     {
-        $amendement = Amendement::with("propositions")->findOrFail($amendementId);
-
         $nouveauxSegments = [];
 
         // cas où l'amendement est sur un segment unique
         if(count($amendement->propositions)==1)
-            self::checkCreateModification($amendement->propositions[0]->id, $amendement->propositions[0]->texte);
+            self::checkCreateModification($amendement->propositions[0]->id, $amendement->texte);
         else{
             $texteRestant = $amendement->texte;
             
