@@ -33,6 +33,7 @@
             <x-button route="{{ route('amendements.create', ['documentId' => $document->id]) }}" label="Proposer un amendement" />    
             @endif
             <x-button route="{{ route('amendements.index', ['documentId' => $document->id]) }}" label="Voir les amendements" />
+            <x-button route="{{ route('fusion.index', ['documentId' => $document->id]) }}" label="Fusion (temporaire)" />
         </div>
     </div>
     

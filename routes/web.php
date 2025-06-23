@@ -17,6 +17,10 @@ use App\Livewire\Documents\Create as DocumentsCreate;
 use App\Livewire\Amendements\Index as AmendementsIndex;
 use App\Livewire\Amendements\Create as AmendementsCreate;
 
+use App\Livewire\Fusion\Index as FusionIndex;
+use App\Livewire\Fusion\Read as FusionRead;
+use App\Livewire\Fusion\Create as FusionCreate;
+
 Route::view('/', 'welcome')->name('welcome');
 
 
@@ -47,6 +51,10 @@ Route::post('/logout', function (Logout $logout) {
         Route::get('/documents/{documentId}/amendements', AmendementsIndex::class)->name('amendements.index');
         Route::get('/documents/{documentId}/amendements/create', AmendementsCreate::class)->name('amendements.create');
         Route::get('/amendements/{amendement}', AmendementsRead::class)->name('amendements.read');
+
+        Route::get('/documents/{documentId}/fusion', FusionIndex::class)->name('fusion.index');
+        Route::get('fusion/{segmentId}/read', FusionRead::class)->name('fusion.read');
+        Route::get('fusion/{segmentId}/create', FusionCreate::class)->name('fusion.create');
 
         Route::get('/sessions/{sessionId}/president', President::class)->name('sessions.president')->middleware(['auth', 'president', 'session.en.cours']);
         Route::get('/sessions/{sessionId}/membre', Membre::class)->name('sessions.membre')->middleware('session.en.cours');

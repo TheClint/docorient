@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Models\Document;
 use App\Models\Modification;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Segment extends Model
 {
@@ -26,8 +26,8 @@ class Segment extends Model
         return $this->belongsToMany(Amendement::class)->as('propositions');
     }
 
-    public function modification() : HasOne
+    public function modifications() : HasMany
     {
-        return $this->hasOne(Modification::class);
+        return $this->hasMany(Modification::class);
     }
 }

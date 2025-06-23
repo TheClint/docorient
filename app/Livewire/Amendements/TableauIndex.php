@@ -5,7 +5,6 @@ namespace App\Livewire\Amendements;
 use App\Models\Segment;
 use App\Models\Session;
 use Livewire\Component;
-use App\Models\Document;
 use App\Models\Amendement;
 use Illuminate\Support\Facades\Auth;
 

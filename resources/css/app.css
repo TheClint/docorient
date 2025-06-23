@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.diff{
+    background-color: #fff3b0; /* jaune pâle */
+    color: black;
+    font-weight: bold;
+    padding: 0 2px;
+}
+
+.hidden {
+    display: none;
+}

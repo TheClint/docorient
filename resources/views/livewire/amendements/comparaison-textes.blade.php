@@ -1,14 +1,4 @@
 <div class="grid grid-cols-2 gap-4">
-
-    <style>
-        .diff {
-            background-color: yellow;
-            color: black;
-            font-weight: bold;
-            padding: 0px;
-            border-radius: 2px;
-        }
-    </style>
     
     <div class="bg-gray-200 p-4">
         <h4 class="flex text-xl font-bold mb-2 justify-center">Texte original</h4>

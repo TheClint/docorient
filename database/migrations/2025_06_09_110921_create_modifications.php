@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->text("texte")->nullable();
             $table->foreignId('segment_id')->constrained()->onDelete('cascade');
+            $table->foreignId('amendement_id')->constrained()->onDelete('cascade');
         });
     }
 

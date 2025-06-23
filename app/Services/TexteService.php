@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Segment;
 use App\Models\Amendement;
 use App\Models\Modification;
 
@@ -10,10 +11,10 @@ class TexteService{
     public static function modificationDocument(Amendement $amendement)
     {
         $nouveauxSegments = [];
-
+        
         // cas où l'amendement est sur un segment unique
         if(count($amendement->propositions)==1)
-            self::checkCreateModification($amendement->propositions[0]->id, $amendement->texte);
+            self::checkCreateModification($amendement->propositions[0]->id, $amendement, $amendement->texte);
         else{
             $texteRestant = $amendement->texte;
             
@@ -68,25 +69,56 @@ class TexteService{
 
             // persistance en base des modifications
             foreach($nouveauxSegments as $id => $texte){
-                Self::checkCreateModification($id, $texte);
+                Self::checkCreateModification($id, $amendement, $texte);
             }
         }      
     }
 
-    // fonction pour vérifier s'il existe déjà une modification pour un segment, et la créer si non
-    public static function checkCreateModification(int $segmentId, string $texte)
+    public static function checkCreateModification(int $segmentId, Amendement $amendement, string $texte)
     {
-        $modification = Modification::where('segment_id', $segmentId)->first();
+        if($amendement->estFusion()){
+            $segment = Segment::with(['document', 'propositions'])->find($segmentId);
 
-        if ($modification) {
-            // il y a conflit
-            $modification->texte = null;
-            $modification->save();
-        } else {
-            // il n'y a pas conflit
-            Modification::create([
+            $max = 0;
+            $idMax = null;
+            
+            foreach($segment->propositions as $amendementDuSegment){
+                $amendementDuSegment = Amendement::with('propositions.document.session.votes')->find($amendementDuSegment->id);
+                
+                // recherche de l'amendement avec le plus de pour
+                if($amendementDuSegment->estFusion()){
+                    $amendementDuSegment->votes->filter(fn($vote) => $vote->approbation = "pour");
+                    if(count($amendementDuSegment->votes)>=$max){
+                        $max = count($amendementDuSegment->votes);
+                        $idMax = $amendementDuSegment->id;
+                    }
+                }
+            }
+
+            if(count($segment->modifications)>1){
+                // Suppression de toutes les modifications en cas de modifications multiples sur le même segment
+                Modification::where('segment_id', $segmentId)->delete();
+
+                // Création d'une modification unique
+                Modification::firstOrCreate([
+                    'segment_id' => $segmentId,
+                    'amendement_id' => $amendement->id,
+                    'texte' => null,
+                ]);
+            }
+            
+            if($idMax === $amendement->id){
+                $modif = Modification::where('segment_id', $segmentId)->first();
+                $modif->texte = $texte;
+                $modif->save();
+            }
+
+        }else{
+            // Vérifie s’il existe déjà une modification avec ce texte pour ce segment
+            Modification::firstOrCreate([
                 'segment_id' => $segmentId,
-                'texte' => $texte, 
+                'amendement_id' => $amendement->id,
+                'texte' => $texte,
             ]);
         }
     }
