@@ -56,7 +56,8 @@
 
                     <div class="mt-4">
                         @if($session->user_id == Auth::id())
-                            <x-button route="{{ route('sessions.president', $session->id) }}" label="Présider" />
+                                <x-button route="{{ route('sessions.president', $session->id) }}" label="Présider" />
+                                <x-button class="ml-4" route="{{ route('sessions.edit', $session->id) }}" label="Gérer" />
                         @else
                             <x-button route="{{ route('sessions.membre', $session->id) }}" label="Participer" />
                         @endif

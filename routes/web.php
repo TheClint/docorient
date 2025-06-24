@@ -2,8 +2,7 @@
 
 use App\Livewire\Actions\Logout;
 
-use App\Livewire\Sessions\Membre;
-use App\Livewire\Sessions\President;
+
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Documents\Edit as DocumentsEdit;
 
@@ -11,7 +10,11 @@ use App\Livewire\Documents\Read as DocumentsRead;
 use App\Livewire\Sessions\Index as SessionsIndex;
 use App\Livewire\Documents\Index as DocumentsIndex;
 
+use App\Livewire\Sessions\Membre;
+use App\Livewire\Sessions\President;
 use App\Livewire\Sessions\Create as SessionsCreate;
+use App\Livewire\Sessions\Edit as SessionsEdit;
+
 use App\Livewire\Amendements\Read as AmendementsRead;
 use App\Livewire\Documents\Create as DocumentsCreate;
 use App\Livewire\Amendements\Index as AmendementsIndex;
@@ -58,9 +61,10 @@ Route::post('/logout', function (Logout $logout) {
 
         Route::get('/sessions/{sessionId}/president', President::class)->name('sessions.president')->middleware(['auth', 'president', 'session.en.cours']);
         Route::get('/sessions/{sessionId}/membre', Membre::class)->name('sessions.membre')->middleware('session.en.cours');
-
+        
         Route::get('/sessions/ajouter', SessionsCreate::class)->name('sessions.create');
         Route::get('/sessions', SessionsIndex::class)->name('sessions.index');
+        Route::get('/sessions/{sessionId}/edit', SessionsEdit::class)->name('sessions.edit')->middleware(['auth', 'president', 'session.en.cours']);
 });
 
 require __DIR__.'/auth.php';

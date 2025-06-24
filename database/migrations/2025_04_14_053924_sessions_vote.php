@@ -25,6 +25,7 @@ return new class extends Migration
             $table->foreignIdFor(Amendement::class)
                   ->nullable()
                   ->nullOnDelete();
+            $table->json('commissaires')->nullable();
         });
     }
 

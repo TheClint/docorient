@@ -6,8 +6,8 @@
     </h2>
     {{-- 🔹 Sous-cadre fixe pour l'état de la session --}}
     <div wire:poll.3s="poll" class="mx-auto w-full max-w-7xl h-[60vh] bg-white shadow rounded-2xl p-6 overflow-y-auto">
-        @if ($documentEnCours)
-            @if ($amendementEnCours)
+        @if($documentEnCours)
+            @if($amendementEnCours)
                 @if($amendementEnCours->statut->libelle === "non voté")
                     <livewire:amendements.read :amendement="$amendementEnCours" mode="session"/>
                 @else

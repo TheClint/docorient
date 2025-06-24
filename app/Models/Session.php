@@ -12,6 +12,7 @@ class Session extends Model
     protected $casts = [
         'ouverture' => 'datetime',
         'fermeture' => 'datetime',
+        'commissaires' => 'array',
     ];
 
     protected $fillable = [

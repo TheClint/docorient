@@ -83,7 +83,7 @@ class TexteService{
             $idMax = null;
             
             foreach($segment->propositions as $amendementDuSegment){
-                $amendementDuSegment = Amendement::with('propositions.document.session.votes')->find($amendementDuSegment->id);
+                $amendementDuSegment = Amendement::with(['propositions.document.session', 'votes'])->find($amendementDuSegment->id);
                 
                 // recherche de l'amendement avec le plus de pour
                 if($amendementDuSegment->estFusion()){

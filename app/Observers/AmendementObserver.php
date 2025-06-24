@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use Carbon\Carbon;
 use App\Models\Amendement;
 use App\Jobs\ComptabiliserVoteAmendementJob;
 
@@ -31,7 +32,7 @@ class AmendementObserver
         if ($amendement->vote_fermeture) {
             
             // Calcul du délai en secondes
-            $delayInSeconds = $amendement->vote_fermeture->timestamp - now()->timestamp;
+            $delayInSeconds = Carbon::parse($amendement->vote_fermeture)->timestamp - now()->timestamp;
 
             // Ne planifie que si la date est dans le futur
             if ($delayInSeconds > 0) {
