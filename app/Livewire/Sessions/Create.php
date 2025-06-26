@@ -30,8 +30,8 @@ class Create extends Component
             'lieu' => 'required|string|max:255',
             'nom' => 'required|string|max:255',
             'president' => 'integer|exists:users,id',
-            'ouverture' => 'date',
-            'fermeture' => 'nullable|date',
+            'ouverture' => 'required|date|after:now',
+            'fermeture' => 'nullable|date|after:ouverture',
         ]);
 
         // Création de la session en base

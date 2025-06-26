@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->foreignIdFor(User::class);
             $table->timestamp('amendement_ouverture')->nullable();
+            $table->timestamp('amendement_fermeture')->nullable();
             $table->timestamp('vote_fermeture')->nullable();
             $table->foreignIdFor(Session::class)
                   ->nullable()

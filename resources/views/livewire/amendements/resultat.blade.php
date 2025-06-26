@@ -1,9 +1,15 @@
 
 <div class="w-full h-full px-8 py-4 flex gap-8 items-stretch">
     {{-- 🟢 Graphique circulaire à gauche --}}
-    <div class="flex-1 flex justify-center items-center">
-        <canvas id="voteChart" class=" w-full h-auto"></canvas>
+    <div 
+        x-data="voteChart({ pour: {{ $compteurPour }}, contre: {{ $compteurContre }}, abstention: {{ $compteurAbstention }} })"
+        x-init="init()"
+        x-on:vote-completed.window="update($event.detail)"
+        class="flex-1 flex justify-center items-center"
+    >
+        <canvas id="voteChart" class="w-full h-auto"></canvas>
     </div>
+
 
     {{-- 🔵 Compteurs au centre --}}
     <div class="flex flex-col justify-around flex-1">
@@ -36,41 +42,54 @@
             </div>
         </div>
     </div>
-   
-    @script
-    <script> 
-        function renderVoteChart() {
-            const canvas = document.getElementById('voteChart');
 
-            const ctx = canvas.getContext('2d');
+    @push('scripts')
+    <script>
+        function voteChart({ pour, contre, abstention }) {
+            return {
+                chart: null,
 
-            window.voteChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Pour', 'Contre', 'Abstention'],
-                    datasets: [{
-                        data: [{{ $compteurPour }}, {{ $compteurContre }}, {{ $compteurAbstention }}],
-                        backgroundColor: ['#22c55e', '#ef4444', '#facc15'],
-                        borderColor: '#fff',
-                        borderWidth: 2
-                    }]
+                init() {
+                    this.render(pour, contre, abstention);
                 },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
-        }
 
-        document.addEventListener('DOMContentLoaded', renderVoteChart);
-        
+                render(p, c, a) {
+                    const ctx = document.getElementById('voteChart').getContext('2d');
+                    
+                    if (this.chart) {
+                        this.chart.destroy();
+                    }
+
+                    this.chart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Pour', 'Contre', 'Abstention'],
+                            datasets: [{
+                                data: [p, c, a],
+                                backgroundColor: ['#22c55e', '#ef4444', '#facc15'],
+                                borderColor: '#fff',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            }
+                        }
+                    });
+                },
+
+                update({ pour, contre, abstention }) {
+                    this.render(pour, contre, abstention);
+                }
+            }
+        }
     </script>
-    @endscript
-    
+@endpush
+
 </div>
 
 

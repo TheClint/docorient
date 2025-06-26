@@ -24,5 +24,4 @@
             <p>En attente du document à traiter</p>
         @endif
     </div>
-
 </div>

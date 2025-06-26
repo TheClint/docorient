@@ -16,6 +16,7 @@ class Create extends Component
     public $description;
     public $contenu;
     public $amendement_ouverture;
+    public $amendement_fermeture;
     public $vote_fermeture;
     public bool $automatique = false;
     public $sessions = [];
@@ -27,7 +28,6 @@ class Create extends Component
         $this->sessions = Session::where('ouverture', '>', Carbon::now())
             ->orderBy('ouverture', 'asc')
             ->get();
-
     }
 
     // Fonction pour enregistrer le document
@@ -40,8 +40,41 @@ class Create extends Component
             'description' => 'nullable|string',
             'contenu' => 'required|string',
             'amendement_ouverture' => 'nullable|date',
+            'amendement_fermeture' => 'nullable|date',
             'vote_fermeture' => 'nullable|date',
         ]);
+
+        $this->vote_fermeture = $this->vote_fermeture ? Carbon::parse($this->vote_fermeture, 'Europe/Paris') : null;
+
+        $dateFinVoteOuDebutSession = $this->vote_fermeture ? $this->vote_fermeture : Session::find($this->session)->ouverture;
+
+        // Remplacement des valeurs par défaut et parsing en format carbon
+        if($this->amendement_fermeture === null)
+            $this->amendement_fermeture = $dateFinVoteOuDebutSession;
+        else
+            $this->amendement_fermeture = Carbon::parse($this->amendement_fermeture, 'Europe/Paris');
+        
+        if($this->amendement_ouverture === null)
+            $this->amendement_ouverture = Carbon::now();
+        else
+            $this->amendement_ouverture = Carbon::parse($this->amendement_ouverture, 'Europe/Paris');
+        
+
+        // Validation par rapport aux dates
+        if($this->vote_fermeture && $this->vote_fermeture < Carbon::now()){
+            session()->flash('error', 'Le vote doit être dans l\'avenir');
+            return;
+        }
+
+        if($this->amendement_fermeture < $this->amendement_ouverture){
+            session()->flash('error', 'La fermeture des amendements doit se faire après leur ouverture');
+            return;
+        }
+
+        if($this->amendement_fermeture > $dateFinVoteOuDebutSession){
+            session()->flash('error', 'Les amendements ne peuvent pas être proposé après le vote');
+            return;
+        }
 
         // Création du document en base
         $document = Document::create([
@@ -49,8 +82,9 @@ class Create extends Component
             'description' => $this->description,
             'session_id' => $this?->session,
             'user_id' => Auth::id(), // On associe l'ID de l'utilisateur connecté
-            'amendement_ouverture' => Carbon::parse($this->amendement_ouverture, 'Europe/Paris'),
-            'vote_fermeture' => $this->vote_fermeture ? Carbon::parse($this->vote_fermeture, 'Europe/Paris') : null,
+            'amendement_ouverture' =>$this->amendement_ouverture,
+            'amendement_fermeture' => $this->amendement_fermeture,
+            'vote_fermeture' => $this->vote_fermeture,
         ]);
 
         // découpage initiale des segments

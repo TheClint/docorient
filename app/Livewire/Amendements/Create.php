@@ -2,15 +2,18 @@
 
 namespace App\Livewire\Amendements;
 
+use Carbon\Carbon;
 use App\Models\Statut;
 use App\Models\Segment;
 use Livewire\Component;
+use App\Models\Document;
 use App\Models\Amendement;
 use Illuminate\Support\Facades\Auth;
 
 class Create extends Component
 {
     public int $documentId; // correspond à {documentId} dans la route
+    public Document $document;
     public $segments;
 
     public $segmentDebutId = null;
@@ -21,6 +24,8 @@ class Create extends Component
 
     public function mount()
     {
+        $this->document = Document::find($this->documentId);
+
         $this->segments = Segment::where('document_id', $this->documentId)
                                  ->orderBy('id')
                                  ->get();
@@ -57,6 +62,11 @@ class Create extends Component
     public function save()
     {
 
+        if(Carbon::now()>$this->document->amendement_fermeture || Carbon::now()<$this->document->amendement_ouverture){
+            session()->flash('error', 'Amendement hors-delai');
+            return;
+        }
+
         if(!isset($this->segmentDebutId))
             session()->flash('warning', 'Vous n\'avez pas selectionné de plage');
         else{
@@ -75,6 +85,7 @@ class Create extends Component
             ->pluck('texte')
             ->implode('');
 
+            // if()
             // vérification si l'amendement proposé est différent du texte original
             if(strcmp($this->texteModifiable, $selectedSegments)){
 

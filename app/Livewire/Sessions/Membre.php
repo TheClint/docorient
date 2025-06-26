@@ -12,6 +12,7 @@ class Membre extends Component
     public Session $session;
     public $documentEnCours;
     public ?Amendement $amendementEnCours = null;
+    public $ancienEtat = false;
 
     public function mount($sessionId)
     {
@@ -42,6 +43,16 @@ class Membre extends Component
         $this->chargerAmendementEnCours();
        
         $this->documentEnCours = ($this->amendementEnCours) ? $this->amendementEnCours->propositions()->with('document')->first()?->document : null;
+
+        if($this->amendementEnCours !== null){
+            if($this->ancienEtat == false && $this->amendementEnCours->statut->libelle != "non voté"){
+                $this->dispatch('amendementVote', ['id' => $this->amendementEnCours->id]);
+                $this->ancienEtat = true;
+            }
+
+            if($this->ancienEtat === true && $this->amendementEnCours->statut->libelle === "non voté")
+                $this->ancienEtat = false;
+        }
 
         $this->render();
     }

@@ -13,6 +13,7 @@ class Index extends Component
     public int $documentId;
     public array $groupesConnexes = [];
     public bool $president = false;
+    public bool $commissaire = false;
     public string $mode = 'consultation';
 
     public function mount(int $documentId): void
@@ -22,6 +23,7 @@ class Index extends Component
         $document = Document::with('session')->findOrFail($this->documentId);
         $this->mode = $document->session ? 'session' : 'consultation';
         $this->president = $document->session && $document->session->user_id === Auth::id();
+        $this->commissaire = $document->session && in_array(Auth::id(), $document->session->commissaires ?? []);
 
         $this->groupesConnexes = $this->calculerGroupesConnexes($document);
     }

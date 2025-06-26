@@ -12,24 +12,41 @@ class Resultat extends Component
     public $compteurPour;
     public $compteurContre;
     public $compteurAbstention;
+    protected $listeners = [
+        'amendementVote' => 'handleAmendementVote',
+    ];
 
     public function mount($amendementId)
     {
         $this->amendement = Amendement::find($amendementId);
         $this->votes = $this->amendement->votes;
 
-        $this->compteurPour = 0;
-        $this->compteurContre = 0;
-        $this->compteurAbstention = 0;
+        $this->loadData();
+    }
 
-        foreach($this->votes as $vote){
-            if($vote->vote->approbation === "pour")
-                $this->compteurPour++;
-            if($vote->vote->approbation === "contre")
-                $this->compteurContre++;
-            if($vote->vote->approbation === "abstention")
-                $this->compteurAbstention++;
+    public function handleAmendementVote($id)
+    {
+        // facultatif : vérifie si $id correspond à l'amendement affiché
+        if ($this->amendement->id == $id) {
+            // actualise tes données si nécessaire ici
+            $this->loadData();
+
+            // Envoie l’événement JS pour Alpine/Chart.js
+            $this->dispatch('vote-completed', [
+                'pour' => $this->compteurPour,
+                'contre' => $this->compteurContre,
+                'abstention' => $this->compteurAbstention,
+            ]);
         }
+    }
+
+    protected function loadData()
+    {
+        // recharge les données si besoin
+        $amendement = Amendement::with('votes')->find($this->amendement->id);
+        $this->compteurPour = $amendement->votes()->where('approbation', 'pour')->count();
+        $this->compteurContre = $amendement->votes()->where('approbation', 'contre')->count();
+        $this->compteurAbstention = $amendement->votes()->where('approbation', 'abstention')->count();
     }
 
     public function render()

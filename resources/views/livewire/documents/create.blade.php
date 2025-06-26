@@ -74,9 +74,15 @@
         </div>
 
         <div>
-            <label for="amendement_ouverture" class="block">Amendement ouverture</label>
+            <label for="amendement_ouverture" class="block">Date d'ouveture de proposition des amendements</label>
             <input type="datetime-local" id="amendement_ouverture" wire:model.live="amendement_ouverture" class="border p-1 w-full" />
             @error('amendement_ouverture') <span class="text-red-500">{{ $message }}</span> @enderror
+        </div>
+
+        <div>
+            <label for="amendement_fermeture" class="block">Date de fermeture de proposition des amendements</label>
+            <input type="datetime-local" id="amendement_fermeture" wire:model.live="amendement_fermeture" class="border p-1 w-full" />
+            @error('amendement_fermeture') <span class="text-red-500">{{ $message }}</span> @enderror
         </div>
 
         <div class="flex space-x-2 pt-4">

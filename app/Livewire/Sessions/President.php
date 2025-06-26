@@ -14,6 +14,7 @@ class President extends Component
     public $documentEnCours;
     public ?Amendement $amendementEnCours = null;
     protected $listeners = ['documentChoisi', 'amendementChoisi', 'lancerVote', 'passerAmendementSuivant', 'cloreLaSession'];
+    public $ancienEtat = false;
     
 
     public function mount($sessionId)
@@ -84,6 +85,15 @@ class President extends Component
 
     public function poll()
     {
+        if($this->amendementEnCours !== null){
+            if($this->ancienEtat == false && $this->amendementEnCours->statut->libelle != "non voté"){
+                $this->dispatch('amendementVote', ['id' => $this->amendementEnCours->id]);
+                $this->ancienEtat = true;
+            }
+
+            if($this->ancienEtat === true && $this->amendementEnCours->statut->libelle === "non voté")
+                $this->ancienEtat = false;
+        }
         // force l'actualisation de tous les components en attendant une technologie plus complète comme websocket
     }
 

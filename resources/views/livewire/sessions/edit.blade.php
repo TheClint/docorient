@@ -1,4 +1,4 @@
-<div class="space-y-4 w-full flex flex-col" style="min-height: calc(70vh)">
+<div class="space-y-4 w-full h-auto flex flex-col justify-between" style="min-height: calc(70vh)">
 
     
     <div>
@@ -41,6 +41,9 @@
                 @endif
             </div>
         </div>
+        
     </div>
-
+    <div>
+        <x-button route="{{ route('sessions.index') }}" label="Revenir aux sessions" />
+    </div>
 </div>

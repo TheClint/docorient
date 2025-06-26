@@ -183,7 +183,7 @@ class TexteService{
 
         // Parcours des mots et ajout des balises de surbrillance
         for ($i = 0; $i < count($words); $i++) {
-            if (preg_match('/\p{L}/u', $words[$i])) { // Vérifie si c'est un mot
+            if (preg_match('/^[\p{L}\p{N}]+$/u', $words[$i])) { // Vérifie si c'est un mot
                 if (in_array($i, $positions)) {
                     if(substr($output, -8) == '</span> '){
                         // retrait du span sur le mot précédent pour avoir une continuité.
@@ -201,5 +201,13 @@ class TexteService{
         }
 
         return $output;
+    }
+
+    // Fonction pour découper le texte en mots, ponctuation et espaces
+    public static function splitText(string $text): array
+    {
+        //preg_match_all('/\p{L}+|\p{P}+|\s+/u', $text, $matches);
+        preg_match_all('/\p{L}+|\p{N}+|\p{P}+|\s+/u', $text, $matches);
+        return $matches[0]; // Retourne les éléments découpés
     }
 }

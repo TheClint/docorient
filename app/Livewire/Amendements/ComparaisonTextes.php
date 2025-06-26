@@ -45,8 +45,8 @@ class ComparaisonTextes extends Component
             $this->texteOriginal .= $proposition->texte;
         }
 
-        $this->motsTextOriginal = $this->splitText($this->texteOriginal);
-        $this->motsTextAmende = $this->splitText($this->amendement->texte);
+        $this->motsTextOriginal = TexteService::splitText($this->texteOriginal);
+        $this->motsTextAmende = TexteService::splitText($this->amendement->texte);
 
         // Appel à LCS pour obtenir les positions de différences
         $resultat = TexteService::LCS($this->motsTextOriginal, $this->motsTextAmende);
@@ -57,15 +57,6 @@ class ComparaisonTextes extends Component
         // Génère les textes avec les différences surlignées
         $this->formattedTextOriginal = TexteService::highlightDifferences($this->motsTextOriginal, $this->positionsDiffTextOriginal);
         $this->formattedTextAmende = TexteService::highlightDifferences($this->motsTextAmende, $this->positionsDiffTextAmende);
-    }
-
-    
-
-    // Fonction pour découper le texte en mots, ponctuation et espaces
-    public function splitText(string $text): array
-    {
-        preg_match_all('/\p{L}+|\p{P}+|\s+/u', $text, $matches);
-        return $matches[0]; // Retourne les éléments découpés
     }
 
     public function render()
