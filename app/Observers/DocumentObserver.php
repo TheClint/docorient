@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\Groupe;
 use App\Models\Document;
 use App\Jobs\ComptabiliserVoteDocumentJob;
 
@@ -39,6 +40,8 @@ class DocumentObserver
             if ($delayInSeconds > 0) {
                 ComptabiliserVoteDocumentJob::dispatch($document)
                     ->delay(now()->addSeconds($delayInSeconds));
+                ComptabiliserVoteDocumentJob::dispatch($document)
+                    ->delay(now()->addSeconds($delayInSeconds)->addHours($document->theme->groupe->delai_fusion + $document->theme->groupe->vote_fusion));
             }
         }
     }

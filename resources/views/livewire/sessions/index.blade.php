@@ -13,6 +13,7 @@
                     <div class="flex flex-col space-y-2">
 
                         <h2 class="text-xl font-bold text-gray-800 break-words">{{ $session->nom }}</h2>
+                        <h3 class="text-x2 font-bold text-gray-800 break-words">{{ $session->groupe->nom }}</h3>
 
                         @if($session->lieu)
                             <p class="text-sm break-words">lieu :
@@ -78,6 +79,7 @@
                     <div class="flex flex-col space-y-2">
 
                         <h2 class="text-xl font-bold text-gray-800 break-words">{{ $session->nom }}</h2>
+                        <h3 class="text-x2 font-bold text-gray-800 break-words">{{ $session->groupe->nom }}</h3>
 
                         @if($session->lieu)
                             <p class="text-sm break-words">lieu :
@@ -128,6 +130,7 @@
                     <div class="flex flex-col space-y-2">
 
                         <h2 class="text-xl font-bold text-gray-800 break-words">{{ $session->nom }}</h2>
+                        <h3 class="text-x2 font-bold text-gray-800 break-words">{{ $session->groupe->nom }}</h3>
 
                         @if($session->lieu)
                             <p class="text-sm break-words">lieu :

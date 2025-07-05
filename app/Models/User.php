@@ -8,7 +8,6 @@ use App\Models\Amendement;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -27,7 +26,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'groupe_id'
     ];
 
     /**
@@ -68,9 +66,11 @@ class User extends Authenticatable
         return $this->hasOne(Groupe::class);
     }
 
-    public function groupe(): BelongsTo
+    public function groupes(): BelongsToMany
     {
-        return $this->belongsTo(Groupe::class);
+        return $this->belongsToMany(Groupe::class)
+                    ->withPivot("procuration", "delegation")
+                    ->withTimestamps();
     }
 
     public function votes(): BelongsToMany

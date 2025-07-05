@@ -27,10 +27,6 @@ new #[Layout('components.layouts.guest')] class extends Component
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $groupe = new Groupe(["nom" => "groupe de truc"]);
-        $groupe->save();
-        $validated['groupe_id'] = $groupe->id;
-
         $validated['password'] = Hash::make($validated['password']);
 
         event(new Registered($user = User::create($validated)));

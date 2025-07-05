@@ -16,7 +16,13 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string("nom");
-            $table->foreignIdFor(User::class)->nullable();
+            $table->foreignId('primus_inter_pares')->nullable()->constrained('users');
+            // Delai d'ouverture à la suite du vote pour fusionner les amendements conflictuels
+            $table->integer('delai_fusion')->default(72);
+            // Delai suite à la fin du delai de fusion pour voter les amendements de fusion
+            $table->integer('vote_fusion')->default(96);
+            // taux minimum d'acception d'un vote
+            $table->integer('taux_majorite')->default(50);
         });
     }
 

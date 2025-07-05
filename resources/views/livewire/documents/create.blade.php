@@ -50,7 +50,7 @@
                 <div class="flex space-x-2 pt-4">
                     <div>
                         <label for="session" class="block">Choisir la session</label>
-                        <select wire:model="session" id="session" name="session" class="border p-1 w-full">
+                        <select wire:model.live="session" id="session" name="session" class="border p-1 w-full">
                             <option value="">-- Sélectionner --</option>
                             @foreach($sessions as $session)
                                 <option value="{{ $session->id }}">{{ $session->nom }} du {{ $session->ouverture->setTimezone('Europe/Paris')->format('d/m/Y à H:i') }}</option>
@@ -65,13 +65,37 @@
 
             <!-- Zone conditionnelle : AUTOMATIQUE -->
             @if($automatique)
+
                 <div>
                     <label for="vote_fermeture" class="block">Vote fermeture</label>
                     <input type="datetime-local" id="vote_fermeture" wire:model.live="vote_fermeture" class="border p-1 w-full" />
                     @error('vote_fermeture') <span class="text-red-500">{{ $message }}</span> @enderror
                 </div>
+
+                <div>
+                    <label for="groupe" class="block">Choisir le groupe</label>
+                    <select wire:model.live="groupeId" id="groupe" name="groupe" class="border p-1 w-full">
+                        <option value="">-- Sélectionner --</option>
+                        @foreach($groupes as $g)
+                            <option value="{{ $g->id }}">{{ $g->nom }}</option>
+                        @endforeach
+                    </select>
+                </div>    
+                
             @endif
         </div>
+
+        @if($groupeCourant)
+            <div>
+                <label for="theme" class="block">Choisir le thème</label>
+                <select wire:model="theme" id="theme" name="theme" class="border p-1 w-full">
+                    <option value="">-- Sélectionner --</option>
+                    @foreach($groupeCourant->themes as $theme)
+                        <option value="{{ $theme->id }}">{{ $theme->nom }}</option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
 
         <div>
             <label for="amendement_ouverture" class="block">Date d'ouveture de proposition des amendements</label>

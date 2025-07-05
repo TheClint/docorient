@@ -19,6 +19,7 @@ class Document extends Model
         'vote_fermeture',
         'amendement_en_cours_id',
         'mode_vote',
+        'theme_id',
     ];
 
     public function createur(): BelongsTo
@@ -34,6 +35,11 @@ class Document extends Model
     public function session()
     {
         return $this->belongsTo(Session::class);
+    }
+
+    public function theme()
+    {
+        return $this->belongsTo(Theme::class);
     }
 }
 

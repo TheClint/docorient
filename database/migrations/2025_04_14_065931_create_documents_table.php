@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Theme;
 use App\Models\Session;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,6 +20,7 @@ return new class extends Migration
             $table->string('nom');
             $table->text('description')->nullable();
             $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Theme::class);
             $table->timestamp('amendement_ouverture')->nullable();
             $table->timestamp('amendement_fermeture')->nullable();
             $table->timestamp('vote_fermeture')->nullable();

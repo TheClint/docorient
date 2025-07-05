@@ -48,8 +48,8 @@ new class extends Component
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('documents.index')" wire:navigate>
-                        {{ __('Mes amendements') }}
+                    <x-nav-link :href="route('groupes.index')" :active="request()->routeIs('groupes.index')" wire:navigate>
+                        {{ __('Mes groupes') }}
                     </x-nav-link>
                 </div>
 

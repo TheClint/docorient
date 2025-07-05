@@ -24,6 +24,10 @@ use App\Livewire\Fusion\Index as FusionIndex;
 use App\Livewire\Fusion\Read as FusionRead;
 use App\Livewire\Fusion\Create as FusionCreate;
 
+use App\Livewire\Groupes\Create as GroupesCreate;
+use App\Livewire\Groupes\Index as GroupesIndex;
+use App\Livewire\Groupes\Read as GroupesRead;
+
 Route::view('/', 'welcome')->name('welcome');
 
 
@@ -65,6 +69,10 @@ Route::post('/logout', function (Logout $logout) {
         Route::get('/sessions/ajouter', SessionsCreate::class)->name('sessions.create');
         Route::get('/sessions', SessionsIndex::class)->name('sessions.index');
         Route::get('/sessions/{sessionId}/edit', SessionsEdit::class)->name('sessions.edit')->middleware(['auth', 'president', 'session.en.cours']);
+
+        Route::get('/groupes/ajouter', GroupesCreate::class)->name('groupes.create');
+        Route::get('/groupes', GroupesIndex::class)->name('groupes.index');
+        Route::get('/groupes/{groupeId}', GroupesRead::class)->name('groupes.read');
 });
 
 require __DIR__.'/auth.php';

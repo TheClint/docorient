@@ -21,6 +21,7 @@ class Session extends Model
         'user_id',
         'ouverture',
         'fermeture',
+        'groupe_id',
     ];
 
     public function president(): BelongsTo
@@ -36,5 +37,10 @@ class Session extends Model
         public function documents()
     {
         return $this->hasMany(Document::class);
+    }
+
+    public function groupe(): BelongsTo
+    {
+        return $this->belongsTo(Groupe::class);
     }
 }

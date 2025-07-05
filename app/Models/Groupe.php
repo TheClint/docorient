@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Groupe extends Model
 {
     protected $fillable = [
         'nom',
+        'primus_inter_pares',
     ];
 
     public function dirigeant(): BelongsTo
@@ -17,8 +19,15 @@ class Groupe extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function membres(): HasMany
+    public function membres(): BelongsToMany
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class)
+                    ->withPivot("procuration", "delegation")
+                    ->withTimestamps();
+    }
+
+    public function themes(): HasMany
+    {
+        return $this->hasMany(Theme::class);
     }
 }

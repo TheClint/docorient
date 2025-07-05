@@ -21,6 +21,16 @@
         </div>
 
         <div>
+            <label for="groupe" class="block">Choisir le groupe</label>
+            <select wire:model.live="groupe" id="groupe" name="groupe" class="border p-1 w-full">
+                <option value="">-- Sélectionner --</option>
+                @foreach($groupes as $g)
+                    <option value="{{ $g->id }}">{{ $g->nom }}</option>
+                @endforeach
+            </select>
+        </div>  
+
+        <div>
             <label for="president" class="block">Choisir la présidence</label>
             <select wire:model="president" id="president" name="president" class="border p-1 w-full">
                 <option value="">-- Sélectionner --</option>

@@ -3,6 +3,8 @@
 namespace App\Livewire\Documents;
 
 
+use App\Models\User;
+use App\Models\Groupe;
 use App\Models\Segment;
 use App\Models\Session;
 use Livewire\Component;
@@ -21,13 +23,34 @@ class Create extends Component
     public bool $automatique = false;
     public $sessions = [];
     public $session;
+    public $groupeId;
+    public $groupeCourant;
+    public $groupes;
+    public $theme;
+    public $themes = [];
 
     public function mount()
     {
         // Récupère toutes les sessions à venir
         $this->sessions = Session::where('ouverture', '>', Carbon::now())
+            ->whereIn('groupe_id', Auth::user()->groupes->pluck('id'))
             ->orderBy('ouverture', 'asc')
             ->get();
+
+        $this->groupes = User::find(Auth::id())->groupes;
+
+    }
+
+    public function updatedGroupeId($value)
+    {
+        $this->groupeCourant = Groupe::with('themes')->find($value);
+        $this->theme = null; // reset le thème sélectionné
+    }
+
+    public function updatedSession($value)
+    {
+        $this->groupeCourant = Session::with('groupe.themes')->find($value)->groupe;
+        $this->theme = null; // reset le thème sélectionné
     }
 
     // Fonction pour enregistrer le document
@@ -42,6 +65,7 @@ class Create extends Component
             'amendement_ouverture' => 'nullable|date',
             'amendement_fermeture' => 'nullable|date',
             'vote_fermeture' => 'nullable|date',
+            'theme' => 'required|integer',
         ]);
 
         $this->vote_fermeture = $this->vote_fermeture ? Carbon::parse($this->vote_fermeture, 'Europe/Paris') : null;
@@ -85,6 +109,7 @@ class Create extends Component
             'amendement_ouverture' =>$this->amendement_ouverture,
             'amendement_fermeture' => $this->amendement_fermeture,
             'vote_fermeture' => $this->vote_fermeture,
+            'theme_id' => $this->theme,
         ]);
 
         // découpage initiale des segments
