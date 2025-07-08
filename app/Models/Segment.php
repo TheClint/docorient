@@ -30,4 +30,9 @@ class Segment extends Model
     {
         return $this->hasMany(Modification::class);
     }
+
+    public function getGroupe(): ?Groupe
+    {
+        return $this->document?->getGroupe();
+    }
 }

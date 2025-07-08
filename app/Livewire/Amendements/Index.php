@@ -9,9 +9,9 @@ class Index extends Component
 {
     public $document;
 
-    public function mount($documentId)
+    public function mount(Document $documentId)
     {
-        $this->document = Document::find($documentId);
+        $this->document = $documentId;
     }
     
     public function render()

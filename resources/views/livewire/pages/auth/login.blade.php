@@ -20,6 +20,22 @@ new #[Layout('components.layouts.guest')] class extends Component
 
         Session::regenerate();
 
+        // Gestion de l'invitation
+        if (Session::has('pending_invitation_token')) {
+            $token = Session::get('pending_invitation_token');
+
+            $invitation = \App\Models\GroupeInvitation::where('token', $token)
+                ->where('used', false)
+                ->first();
+
+            if ($invitation && $invitation->email === auth()->user()->email) {
+                auth()->user()->groupes()->syncWithoutDetaching([$invitation->groupe_id]);
+                $invitation->used = true;
+                $invitation->save();
+                Session::forget('pending_invitation_token');
+            }
+        }
+
         $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
     }
 }; ?>

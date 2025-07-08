@@ -53,7 +53,7 @@
                         <select wire:model.live="session" id="session" name="session" class="border p-1 w-full">
                             <option value="">-- Sélectionner --</option>
                             @foreach($sessions as $session)
-                                <option value="{{ $session->id }}">{{ $session->nom }} du {{ $session->ouverture->setTimezone('Europe/Paris')->format('d/m/Y à H:i') }}</option>
+                                <option value="{{ $session->id }}">{{ $session->nom }} de {{$session->groupe->nom}} du {{ $session->ouverture->setTimezone('Europe/Paris')->format('d/m/Y à H:i') }}</option>
                             @endforeach
                         </select>
                     </div>

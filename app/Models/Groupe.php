@@ -30,4 +30,9 @@ class Groupe extends Model
     {
         return $this->hasMany(Theme::class);
     }
+
+    public function getGroupe(): Groupe
+    {
+        return $this;
+    }
 }

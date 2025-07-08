@@ -27,9 +27,9 @@ class Read extends Component
 
     public string $texteOriginal = '';
 
-    public function mount(int $segmentId): void
+    public function mount(Segment $segmentId): void
     {
-        $this->segment = Segment::findOrFail($segmentId);
+        $this->segment = $segmentId;
         $this->document = Document::with('session')->findOrFail($this->segment->document_id);
         $this->mode = $this->document->session ? 'session' : 'consultation';
         $this->president = $this->document->session && $this->document->session->user_id === Auth::id();

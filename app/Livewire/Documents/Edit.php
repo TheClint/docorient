@@ -16,9 +16,9 @@ class Edit extends Component
     public $vote_fermeture;
 
     // Chargement des données existantes
-    public function mount($document)
+    public function mount(Document $documentId)
     {
-        $doc = Document::findOrFail($document);
+        $doc = Document::findOrFail($documentId->id);
         $this->documentId = $doc->id;
         $this->nom = $doc->nom;
         $this->description = $doc->description;

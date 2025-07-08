@@ -19,10 +19,10 @@ class Read extends Component
     public $formattedTexteFinalise;
     public $comparerActive = false;
 
-    public function mount($document)
+    public function mount(Document $documentId)
     {
         // Récupère le document et ses segments associés
-        $this->document = Document::with('segments')->findOrFail($document);
+        $this->document = Document::with('segments')->findOrFail($documentId->id);
 
         // Fusionne les segments en un seul texte fluide
         $this->texte = $this->document->segments

@@ -1,6 +1,6 @@
 <div class="space-y-4 w-full flex flex-col" style="min-height: calc(70vh)">
     <x-flash-messages />
-    <div class="flex flex-col space-around">
+    <div class="flex flex-col space-y-4">
         <div class="mt-4 flex flex-col">
             <label for="groupe">Sélectionner un groupe</label>
             <select class="max-w-[15em] my-4" wire:model.live="selectedGroupeId" id="groupe">
@@ -11,10 +11,10 @@
             </select>
         
             @if ($selectedGroupe)
-                <div class="mt-4">
+                <div class="m-4 flex flex-col">
                     <h2>{{ $selectedGroupe->nom }}</h2>
                     <p>{{ $selectedGroupe->membres->count() }} membres</p>
-                    <button wire:click="viewGroupe">Voir le groupe</button>
+                    <x-button route="{{ route('groupes.read', $selectedGroupe->id) }}" label="Voir le groupe" />
                 </div>
             @endif
         </div>

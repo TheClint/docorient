@@ -41,5 +41,10 @@ class Document extends Model
     {
         return $this->belongsTo(Theme::class);
     }
+
+    public function getGroupe(): ?Groupe
+    {
+        return $this->theme?->groupe;
+    }
 }
 

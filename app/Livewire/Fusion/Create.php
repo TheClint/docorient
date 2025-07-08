@@ -25,9 +25,9 @@ class Create extends Component
     public string $texteModifiable = '';
     public string $commentaire = '';
 
-    public function mount(int $segmentId): void
+    public function mount(Segment $segmentId): void
     {
-        $this->segment = Segment::findOrFail($segmentId);
+        $this->segment = $segmentId;
 
         $this->document = Document::with('session')->findOrFail($this->segment->document_id);
         $this->mode = $this->document->session ? 'session' : 'consultation';

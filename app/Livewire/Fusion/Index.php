@@ -16,9 +16,9 @@ class Index extends Component
     public bool $commissaire = false;
     public string $mode = 'consultation';
 
-    public function mount(int $documentId): void
+    public function mount(Document $documentId): void
     {
-        $this->documentId = $documentId;
+        $this->documentId = $documentId->id;
 
         $document = Document::with('session')->findOrFail($this->documentId);
         $this->mode = $document->session ? 'session' : 'consultation';

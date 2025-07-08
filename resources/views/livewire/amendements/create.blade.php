@@ -55,7 +55,7 @@
     <div class="flex justify-between m-4">
         <!-- Bouton à gauche -->
         <div class="flex mr-4">
-            <x-button route="{{ route('documents.read', ['document' => $documentId]) }}" label="Retour au document" />
+            <x-button route="{{ route('documents.read', ['documentId' => $documentId]) }}" label="Retour au document" />
         </div>
     
         <!-- Boutons à droite -->

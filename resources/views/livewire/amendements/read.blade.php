@@ -1,5 +1,5 @@
 
-<div class="container">
+<div class="container mx-auto">
     <x-button route="" label="test" wire:click="test({{ $amendement->id }})" />
     <x-flash-messages />
     <div class="flex flex-row justify-around m-4 mb-8">

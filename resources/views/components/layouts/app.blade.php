@@ -17,7 +17,7 @@
             @endisset
         </header>
 
-        <main class="flex-grow flex items-center justify-center px-6 py-8 h-auto">
+        <main class="flex-grow flex px-6 py-8 h-auto">
             {{ $slot }}
         </main>
 

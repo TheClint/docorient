@@ -1,3 +1,3 @@
 <div>
-    {{-- The whole world belongs to you. --}}
+    <livewire:groupes.invitation :groupe_id="$groupe->id" />
 </div>

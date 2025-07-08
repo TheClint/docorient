@@ -5,6 +5,7 @@ namespace App\Livewire\Sessions;
 use Carbon\Carbon;
 use App\Models\Session;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
@@ -15,8 +16,10 @@ class Index extends Component
     public function mount()
     {
         $now = Carbon::now();
-        $sessions = Session::with('documents')->get();
-        
+        $sessions = Session::whereIn('groupe_id', Auth::user()->groupes->pluck('id'))
+            ->with('documents')
+            ->get();
+ 
         $this->sessionsPasse = $sessions->filter(function ($session) use ($now) {
             return $session->fermeture !== null && $session->fermeture < $now;
         });

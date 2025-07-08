@@ -43,4 +43,9 @@ class Session extends Model
     {
         return $this->belongsTo(Groupe::class);
     }
+
+    public function getGroupe(): BelongsTo
+    {
+        return $this->belongsTo(Groupe::class);
+    }
 }

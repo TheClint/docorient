@@ -16,9 +16,9 @@ class Resultat extends Component
         'amendementVote' => 'handleAmendementVote',
     ];
 
-    public function mount($amendementId)
+    public function mount(Amendement $amendementId)
     {
-        $this->amendement = Amendement::find($amendementId);
+        $this->amendement = $amendementId;
         $this->votes = $this->amendement->votes;
 
         $this->loadData();

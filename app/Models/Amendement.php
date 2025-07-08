@@ -53,7 +53,7 @@ class Amendement extends Model
     {
         $estFusion = false;
 
-        $segment = $this->propositions[0];
+        $segment = $this->propositions->first();
         $document = $segment?->document;
         
         if($document->session_id === null){
@@ -65,6 +65,16 @@ class Amendement extends Model
         }
 
         return $estFusion;
+    }
+
+    public function getDocument(): ?Document
+    {
+        return $this->propositions->first()?->document;
+    }
+
+    public function getGroupe(): ?Groupe
+    {
+        return $this->getDocument()?->getGroupe();
     }
 
 }

@@ -34,6 +34,7 @@ class Create extends Component
         // Récupère toutes les sessions à venir
         $this->sessions = Session::where('ouverture', '>', Carbon::now())
             ->whereIn('groupe_id', Auth::user()->groupes->pluck('id'))
+            ->with('groupe')
             ->orderBy('ouverture', 'asc')
             ->get();
 

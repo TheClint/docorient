@@ -7,7 +7,6 @@ use App\Models\Session;
 use Livewire\Component;
 use App\Models\Document;
 use App\Models\Amendement;
-use App\Services\VoteService;
 use App\Services\TexteService;
 use Illuminate\Support\Facades\Auth;
 

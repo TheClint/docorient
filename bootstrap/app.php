@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Middleware\IsPresident;
 use Illuminate\Foundation\Application;
+use App\Http\Middleware\VerifieGroupeAcces;
+use App\Http\Middleware\StoreInvitationToken;
+use App\Http\Middleware\VerifieSessionEnCours;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use App\Http\Middleware\IsPresident;
-use App\Http\Middleware\VerifieSessionEnCours;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -13,10 +15,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias(['president' => IsPresident::class]);
-    })
-    ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias(['session.en.cours' => VerifieSessionEnCours::class]);
+        $middleware->alias([
+            'president' => IsPresident::class,
+            'session.en.cours' => VerifieSessionEnCours::class,
+            'acces.groupe' => VerifieGroupeAcces::class,
+        ]);
+    
+        $middleware->append(StoreInvitationToken::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -106,7 +106,7 @@ class Create extends Component
 
                 session()->flash('success', 'Amendement proposé avec succès.');
 
-                redirect()->route('documents.read', ['document' => $this->documentId]);
+                redirect()->route('documents.read', ['documentId' => $this->documentId]);
             }else{
                 session()->flash('error', 'L\'amendement proposé est identique au texte original');
             }
