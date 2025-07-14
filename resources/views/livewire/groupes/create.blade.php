@@ -14,7 +14,7 @@
         </div>
 
         <div class="flex space-x-2 pt-4">
-            <button type="submit" class="bg-red-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-red-700 transition ease-in-out duration-300 transform hover:scale-105">Créer le groupe</button>
+            <button type="submit" class="bg-red-600 text-white h-12 px-6 py-3 rounded-lg shadow-md hover:bg-red-700 transition ease-in-out duration-300 transform hover:scale-105">Créer le groupe</button>
         </div>
 
     </form>

@@ -137,7 +137,7 @@ class Create extends Component
             'commentaire' => $this->commentaire,
             'user_id' => Auth::id(),
             'statut_id' => Statut::where("libelle", "non voté")->first()->id,
-            'vote_fermeture' => $this->document->vote_fermeture !== null ? Carbon::parse($this->document->vote_fermeture)->addDays(7) : null,
+            'vote_fermeture' => $this->document->vote_fermeture !== null ? Carbon::parse($this->document->vote_fermeture)->addHours($this->document->theme->groupe->delai_fusion + $this->document->theme->groupe->vote_fusion) : null,
         ]);
 
         $amendement->propositions()->attach($this->groupeSegmentId);

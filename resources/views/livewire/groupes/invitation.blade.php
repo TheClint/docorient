@@ -14,8 +14,8 @@
 
         <input type="hidden" wire:model="groupe_id" />
 
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-            Envoyer une invitation
+        <button type="submit" class="bg-red-600 h-12 text-white px-6 py-3 rounded-lg shadow-md hover:bg-red-700 transition ease-in-out duration-300 transform hover:scale-105">
+            Inviter
         </button>
     </form>
 

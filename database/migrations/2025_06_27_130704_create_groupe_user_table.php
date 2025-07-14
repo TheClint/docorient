@@ -18,8 +18,6 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Groupe::class);
-            $table->json('procuration')->nullable();
-            $table->json('delegation')->nullable();
         });
     }
 

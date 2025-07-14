@@ -68,7 +68,7 @@
                 clearInterval(el._interval); // évite les doublons si la fonction est relancée
         
                 function formatDuree(secondes) {
-                    if (secondes <= 0) return "Terminé";
+                    if (secondes <= 0) return "";
                     const h = String(Math.floor(secondes / 3600)).padStart(2, '0');
                     const m = String(Math.floor((secondes % 3600) / 60)).padStart(2, '0');
                     const s = String(secondes % 60).padStart(2, '0');

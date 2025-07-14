@@ -7,7 +7,7 @@ use App\Models\Session;
 use Livewire\Component;
 use App\Models\Document;
 use App\Models\Amendement;
-use App\Services\TexteService;
+use App\Services\VoteService;
 use Illuminate\Support\Facades\Auth;
 
 class Read extends Component
@@ -73,6 +73,6 @@ class Read extends Component
     }
 
     public function test($amendementId){
-        TexteService::modificationDocument($this->amendement);
+        VoteService::comptabiliserVoteAmendement($this->amendement);
     }
 }

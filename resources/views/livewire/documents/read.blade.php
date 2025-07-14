@@ -50,7 +50,7 @@
                 <x-button route="" wire:click="comparer()" label="Comparer" />   
             @endif
             @if ($fusionOuverte)
-                <x-button route="{{ route('fusion.index', ['documentId' => $document->id]) }}" label="Fusionner" />   
+                <x-button route="{{ route('fusion.index', ['documentId' => $document]) }}" label="Fusionner" />   
             @endif
             <x-button route="{{ route('amendements.index', ['documentId' => $document->id]) }}" label="Voir les amendements" />
             

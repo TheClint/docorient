@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
-    public int $documentId;
+    public $documentId;
     public array $groupesConnexes = [];
     public bool $president = false;
     public bool $commissaire = false;

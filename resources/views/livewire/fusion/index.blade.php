@@ -73,7 +73,7 @@
             </table>
         </div>
         <div class="flex gap-4 mt-6">
-            <x-button route="{{ route('documents.read', ['document' => $documentId]) }}" label="Revenir au document" />
+            <x-button route="{{ route('documents.read', ['documentId' => $documentId]) }}" label="Revenir au document" />
         </div>
     </div>
 </div>

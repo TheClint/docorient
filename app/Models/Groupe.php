@@ -22,7 +22,6 @@ class Groupe extends Model
     public function membres(): BelongsToMany
     {
         return $this->belongsToMany(User::class)
-                    ->withPivot("procuration", "delegation")
                     ->withTimestamps();
     }
 
