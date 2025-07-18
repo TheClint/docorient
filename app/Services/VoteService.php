@@ -14,8 +14,8 @@ class VoteService
     {
         $amendement = Amendement::with('votes')->findOrFail($amendement->id);
 
-        // en attendant d'avoir un système de gestion de groupe
-        $users = User::all();
+        // récupération des membres du groupe
+        $users = $amendement->getGroupe()->membres;
 
         // taux de majorité du vote (par défaut 50%)
         $tauxMajorite = 0.5; 
