@@ -1,0 +1,34 @@
+<div class="flex flex-col w-screen justify-between min-h-[70vh]">
+
+    {{-- 🔹 Titre de la session --}}
+    <h2 class="text-3xl font-bold text-center mb-6">
+        Session : {{ $session->nom }} 
+    </h2>
+    {{-- 🔹 Sous-cadre fixe pour l'état de la session --}}
+    <div wire:poll.3s="poll" class="mx-auto w-full max-w-7xl h-[60vh] bg-white shadow rounded-2xl p-6 overflow-y-auto">
+        @if($documentEnCours)
+            @if($amendementEnCours)
+                @if($amendementEnCours->statut->libelle === "non voté")
+                    <livewire:amendements.read :amendement="$amendementEnCours" mode="session"/>
+                @else
+                <div class="flex w-full h-full">
+                    {{-- 🟢 Résultat du vote à gauche --}}
+                    <div class="flex-1 h-full">
+                        <livewire:amendements.resultat :amendementId="$amendementEnCours->id" />
+                    </div>
+                
+                    {{-- 🔵 Bouton "Suivant" centré verticalement à droite --}}
+                    <div class="w-[200px] flex items-center justify-center h-full">
+                        <x-button route="" label="Suivant" wire:click="passerAmendementSuivant()" />
+                    </div>
+                </div>                
+                @endif
+            @else
+                <livewire:amendements.tableau-index :document="$documentEnCours" mode="session"/>
+            @endif
+        @else
+            <livewire:sessions.choix-document :session-id="$session->id" />
+        @endif
+    </div>
+
+</div>
